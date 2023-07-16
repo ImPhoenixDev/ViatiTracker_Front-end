@@ -32,6 +32,7 @@
     ]
   },
   "dependencies": {
+    "@passageidentity/passage-elements": "1.9.3",
     "gatsby": "5.9.0",
     "gatsby-plugin-pnpm": "1.2.10",
     "react": "18.2.0",
