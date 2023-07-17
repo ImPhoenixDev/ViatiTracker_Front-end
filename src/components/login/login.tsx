@@ -1,15 +1,20 @@
-import { ReactNode } from 'react'
-import '@passageidentity/passage-elements/passage-auth'
+import { ReactNode, FunctionComponent } from 'react'
+import loadable from '@loadable/component'
 
 type LoginProps = {
-  path: string
   children?: ReactNode
 }
 
-export default function Login({ children }: LoginProps) {
+const PassageAuth = loadable(() => import(`./PassageAuthWrapper`), {
+  fallback: <div>Loading...</div>,
+})
+
+const Login: FunctionComponent<LoginProps> = ({ children }) => {
   return (
-    <passage-auth app-id={process.env.GATSBY_PASSAGE_APP_ID}>
+    <PassageAuth app-id={String(process.env.GATSBY_PASSAGE_APP_ID)}>
       {children}
-    </passage-auth>
+    </PassageAuth>
   )
 }
+
+export default Login
