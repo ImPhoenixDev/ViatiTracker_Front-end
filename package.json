@@ -33,6 +33,9 @@
     ]
   },
   "dependencies": {
+    "@emotion/react": "11.11.1",
+    "@emotion/styled": "11.11.0",
+    "@mui/material": "5.14.0",
     "@passageidentity/passage-elements": "1.9.3",
     "gatsby": "5.9.0",
     "gatsby-plugin-manifest": "5.11.0",

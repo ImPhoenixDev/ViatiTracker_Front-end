@@ -14,8 +14,8 @@ const config: GatsbyConfig = {
         short_name: `VT`,
         description: `Registro de facturas y gastos para viajes de trabajo`,
         start_url: `/`,
-        background_color: `#fff`,
-        theme_color: `#4C9FC1`,
+        background_color: `#4C9FC1`,
+        theme_color: `#fff`,
         display: `standalone`,
         icon: `src/images/logo.svg`,
         icons: [

@@ -3,3 +3,21 @@
 @import 'tailwindcss/utilities';
 
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap');
+
+html {
+  height: 100%;
+  background-color: #A1A7B0;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  height: 100%;
+  background-color: #A1A7B0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+

@@ -10,6 +10,8 @@ module.exports = {
         sans: [`Manrope`, `system-ui`, `sans-serif`],
       },
       colors: {
+        dark: `#464646`,
+        lightGray: `#A1A7B0`,
         primary: `#4C9FC1`,
       },
     },
