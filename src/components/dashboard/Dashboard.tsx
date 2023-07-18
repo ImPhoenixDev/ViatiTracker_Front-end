@@ -95,7 +95,12 @@ export default function Dashboard({ path }: DashboardProps) {
             </tr>
           </tbody>
         </table>
-        <button className="group relative h-12 w-10/12 mb-4 overflow-hidden rounded-2xl bg-primary text-lg font-bold text-white">
+        <button
+          className="group relative h-12 w-10/12 mb-4 overflow-hidden rounded-2xl bg-primary text-lg font-bold text-white"
+          onClick={() => {
+            navigate(`/app/create-expense`)
+          }}
+        >
           Agregar gasto
           <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
         </button>
