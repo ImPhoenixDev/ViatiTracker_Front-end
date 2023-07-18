@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import BackComponent from '../backComponent/BackComponent'
 import CardSection from '../cardSection/CardSection'
 import ChipRadioGroup from '../chipRadioGroup/ChipRadioGroup'
+import ImageUpload from '../imageUploadState/ImageUploadState'
 import WebcamCapture from '../webcamCapture/WebcamCapture'
 
 type CreateExpenseProps = {
@@ -51,6 +52,7 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
               name="name"
               id="name"
             />
+            <ImageUpload />
             <input
               className="border border-[#E2E2EA] rounded-[20px] py-2 px-4"
               type="text"
