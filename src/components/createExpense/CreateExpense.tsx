@@ -6,6 +6,9 @@ import ChipRadioGroup from '../chipRadioGroup/ChipRadioGroup'
 import ImageUpload from '../imageUploadState/ImageUploadState'
 import WebcamCapture from '../webcamCapture/WebcamCapture'
 import CardTitle from '../cardTitle/CardTitle'
+import TextFieldWrapper from '../textFieldWrapper/TextFieldWrapper'
+import FormWrapper from '../formWrapper/FormWrapper'
+import { emailRegister } from '../../utils/formUtils/emailRegister'
 
 type CreateExpenseProps = {
   path: string
@@ -13,7 +16,10 @@ type CreateExpenseProps = {
 }
 
 export default function CreateExpense({ path }: CreateExpenseProps) {
-  console.log(path)
+  const onSubmit = (data) => {
+    console.log(data)
+    console.log(path)
+  }
 
   return (
     <section className="login flex flex-col px-4 py-8 pt-0 h-screen lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
@@ -22,58 +28,27 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
       <CardSection>
         <CardTitle>Crear gasto</CardTitle>
 
-        <form className="mt-8">
-          <div className="flex flex-col">
-            <label
-              className="text-dark sans font-bold text-sm mb-2"
-              htmlFor="name"
-            >
-              Nombre
-            </label>
-            <input
-              className="border border-[#E2E2EA] rounded-[20px] py-2 px-4"
-              type="text"
-              name="name"
-              id="name"
-            />
-            <input
-              className="border border-[#E2E2EA] rounded-[20px] py-2 px-4"
-              type="text"
-              name="name"
-              id="name"
-            />
-            <input
-              className="border border-[#E2E2EA] rounded-[20px] py-2 px-4"
-              type="text"
-              name="name"
-              id="name"
-            />
-            <input
-              className="border border-[#E2E2EA] rounded-[20px] py-2 px-4"
-              type="text"
-              name="name"
-              id="name"
-            />
-            <ImageUpload />
-            <input
-              className="border border-[#E2E2EA] rounded-[20px] py-2 px-4"
-              type="text"
-              name="name"
-              id="name"
-            />
-            <ChipRadioGroup />
-            <WebcamCapture />
-            <button
-              className="group relative h-12 w-10/12 mb-4 overflow-hidden rounded-2xl bg-primary text-lg font-bold text-white"
-              onClick={() => {
-                navigate(`/app/dashboard`)
-              }}
-            >
-              Enviar gasto
-              <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
-            </button>
-          </div>
-        </form>
+        <FormWrapper onSubmit={onSubmit}>
+          <TextFieldWrapper
+            label="Email"
+            name="email"
+            registerOptions={emailRegister}
+          />
+          <button type="submit">Submit</button>
+        </FormWrapper>
+
+        <ImageUpload />
+        <ChipRadioGroup />
+        <WebcamCapture />
+        <button
+          className="group relative h-12 w-10/12 mb-4 overflow-hidden rounded-2xl bg-primary text-lg font-bold text-white"
+          onClick={() => {
+            navigate(`/app/dashboard`)
+          }}
+        >
+          Enviar gasto
+          <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+        </button>
       </CardSection>
     </section>
   )

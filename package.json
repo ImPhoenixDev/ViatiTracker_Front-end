@@ -45,6 +45,7 @@
     "gatsby-plugin-preload-fonts": "4.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "7.45.2",
     "react-webcam": "7.1.1",
     "tsconfig-paths-webpack-plugin": "4.0.1"
   },
