@@ -1,9 +1,11 @@
 import { ReactNode } from 'react'
+import { navigate } from 'gatsby'
 import BackComponent from '../backComponent/BackComponent'
 import CardSection from '../cardSection/CardSection'
 import ChipRadioGroup from '../chipRadioGroup/ChipRadioGroup'
 import ImageUpload from '../imageUploadState/ImageUploadState'
 import WebcamCapture from '../webcamCapture/WebcamCapture'
+import CardTitle from '../cardTitle/CardTitle'
 
 type CreateExpenseProps = {
   path: string
@@ -18,7 +20,7 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
       <BackComponent path="/app/dashboard" />
 
       <CardSection>
-        <h1 className="text-dark sans font-bold text-lg mt-8">Nuevo gasto</h1>
+        <CardTitle>Crear gasto</CardTitle>
 
         <form className="mt-8">
           <div className="flex flex-col">
@@ -61,6 +63,15 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
             />
             <ChipRadioGroup />
             <WebcamCapture />
+            <button
+              className="group relative h-12 w-10/12 mb-4 overflow-hidden rounded-2xl bg-primary text-lg font-bold text-white"
+              onClick={() => {
+                navigate(`/app/dashboard`)
+              }}
+            >
+              Enviar gasto
+              <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+            </button>
           </div>
         </form>
       </CardSection>

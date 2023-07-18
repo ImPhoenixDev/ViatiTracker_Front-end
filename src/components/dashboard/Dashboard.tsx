@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import ExpenseRow from '../expenseRow/ExpenseRow'
+import CardTitle from '../cardTitle/CardTitle'
 
 type DashboardProps = {
   path: string
@@ -48,9 +49,7 @@ export default function Dashboard({ path }: DashboardProps) {
         </FormControl>
       </div>
 
-      <h1 className="text-dark sans font-bold text-lg mt-8">
-        Facturas registradas
-      </h1>
+      <CardTitle>Facturas registradas</CardTitle>
 
       <table className="">
         <ExpenseRow
