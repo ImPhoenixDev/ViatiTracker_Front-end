@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import BackComponent from '../backComponent/BackComponent'
 import CardSection from '../cardSection/CardSection'
 import ChipRadioGroup from '../chipRadioGroup/ChipRadioGroup'
+import WebcamCapture from '../webcamCapture/WebcamCapture'
 
 type CreateExpenseProps = {
   path: string
@@ -57,6 +58,7 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
               id="name"
             />
             <ChipRadioGroup />
+            <WebcamCapture />
           </div>
         </form>
       </CardSection>
