@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import Webcam from 'react-webcam'
 import Modal from 'react-modal'
 import './WebcamCapture.css'
@@ -17,7 +17,7 @@ const WebcamCapture: React.FC = () => {
   const capture = useCallback(
     (e) => {
       e.preventDefault()
-      const imageSrc = webcamRef?.current?.getScreenshot()
+      const imageSrc = String(webcamRef?.current?.getScreenshot())
       setCapturedImage(imageSrc)
       setIsOpen(false)
     },
@@ -33,20 +33,6 @@ const WebcamCapture: React.FC = () => {
     e.preventDefault()
     setIsOpen(false)
   }
-
-  // Check for camera permissions
-  useEffect(() => {
-    const checkCameraPermission = async () => {
-      const permissions = await navigator.permissions.query({ name: `camera` })
-      if (permissions.state === `denied`) {
-        alert(
-          `Camera permission was denied. Please enable it in your browser settings.`,
-        )
-      }
-    }
-
-    checkCameraPermission()
-  }, [])
 
   return (
     <div>
