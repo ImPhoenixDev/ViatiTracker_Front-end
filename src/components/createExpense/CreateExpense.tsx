@@ -1,27 +1,49 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { navigate } from 'gatsby'
+import { Stepper, Step, StepLabel } from '@mui/material'
 import BackComponent from '../backComponent/BackComponent'
 import CardSection from '../cardSection/CardSection'
 import ChipRadioGroup from '../chipRadioGroup/ChipRadioGroup'
-import ImageUpload from '../imageUploadState/ImageUploadState'
-import WebcamCapture from '../webcamCapture/WebcamCapture'
+import ImageUploadState from '../imageUploadState/ImageUploadState'
 import CardTitle from '../cardTitle/CardTitle'
 import TextFieldWrapper from '../textFieldWrapper/TextFieldWrapper'
 import FormWrapper from '../formWrapper/FormWrapper'
+import AmountComponent from '../formComponents/amountComponent/AmountComponent'
+import DropdownFieldWrapper from '../formComponents/dropdownComponent/DropdownComponent'
 
 import { emailRegister } from '../../utils/formUtils/emailRegister'
 import { amountRegister } from '@/utils/formUtils/amountRegister'
-import AmountComponent from '../formComponents/amountComponent/AmountComponent'
+import { dateRegister } from '@/utils/formUtils/dateRegister'
 
 type CreateExpenseProps = {
-  path: string
+  path?: string
   children?: ReactNode
 }
 
+type FormData = {
+  email: string
+  amount: string
+  date: string
+  project: string
+  site: string
+  expenseType: string
+}
+
 export default function CreateExpense({ path }: CreateExpenseProps) {
-  const onSubmit = (data) => {
-    console.log(data)
+  const [activeStep, setActiveStep] = useState(0)
+  const steps = [`Captura los campos`, `Captura la evidencia`]
+
+  const [formData, setFormData] = useState<FormData>({} as FormData)
+
+  const onSubmit = (data: FormData) => {
+    setFormData(data)
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
     console.log(path)
+  }
+
+  const handleFinalSubmit = () => {
+    console.log(formData)
+    navigate(`/app/dashboard`)
   }
 
   return (
@@ -31,34 +53,75 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
       <CardSection>
         <CardTitle>Crear gasto</CardTitle>
 
-        <FormWrapper onSubmit={onSubmit}>
-          <TextFieldWrapper
-            label="Email"
-            name="email"
-            registerOptions={emailRegister}
-          />
+        <Stepper activeStep={activeStep} alternativeLabel>
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepLabel onClick={() => setActiveStep(index)}>
+                {label}
+              </StepLabel>
+            </Step>
+          ))}
+        </Stepper>
 
-          <AmountComponent
-            label="Monto"
-            name="amount"
-            registerOptions={amountRegister}
-          />
+        {activeStep === 0 && (
+          <FormWrapper onSubmit={onSubmit}>
+            <TextFieldWrapper
+              label="Email"
+              name="email"
+              registerOptions={emailRegister}
+            />
 
-          <button type="submit">Submit</button>
-        </FormWrapper>
+            <AmountComponent
+              label="Monto"
+              name="amount"
+              registerOptions={amountRegister}
+            />
+            <TextFieldWrapper
+              label="Fecha del gasto"
+              name="date"
+              registerOptions={dateRegister}
+            />
 
-        <ImageUpload />
-        <ChipRadioGroup />
-        <WebcamCapture />
-        <button
-          className="group relative h-12 w-10/12 mb-4 overflow-hidden rounded-2xl bg-primary text-lg font-bold text-white"
-          onClick={() => {
-            navigate(`/app/dashboard`)
-          }}
-        >
-          Enviar gasto
-          <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
-        </button>
+            <DropdownFieldWrapper
+              label="Proyecto"
+              name="project"
+              options={[
+                { value: `1`, label: `Comida` },
+                { value: `2`, label: `Transporte` },
+                { value: `3`, label: `Salud` },
+                { value: `4`, label: `Educación` },
+                { value: `5`, label: `Entretenimiento` },
+              ]}
+              registerOptions={{
+                required: { value: true, message: `Selecciona una opción` },
+              }}
+            />
+
+            <TextFieldWrapper
+              label="Sitio"
+              name="site"
+              registerOptions={{
+                required: { value: true, message: `Selecciona una opción` },
+              }}
+            />
+
+            <ChipRadioGroup
+              label="Tipo de gasto"
+              name="expenseType"
+              registerOptions={{
+                required: { value: true, message: `Selecciona una opción` },
+              }}
+            />
+            <button type="submit">Next</button>
+          </FormWrapper>
+        )}
+
+        {activeStep === 1 && (
+          <FormWrapper onSubmit={handleFinalSubmit}>
+            <ImageUploadState imageRegister={{ required: true }} />
+            <button type="submit">Enviar gasto</button>
+          </FormWrapper>
+        )}
       </CardSection>
     </section>
   )

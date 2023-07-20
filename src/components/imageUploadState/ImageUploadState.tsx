@@ -1,56 +1,127 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useForm, RegisterOptions } from 'react-hook-form'
+import {
+  Button,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+  IconButton,
+} from '@mui/material'
 
-interface ImageUploadState {
-  image: string | ArrayBuffer | null
+import { makeStyles } from '@mui/styles'
+import DeleteIcon from '@mui/icons-material/Delete'
+
+const useStyles = makeStyles(() => ({
+  customButton: {
+    backgroundColor: `#4C9FC1`,
+    color: `#FFF`,
+    '&:hover': {
+      backgroundColor: `#4C9FC1`,
+    },
+  },
+}))
+
+type ImageUploadProps = {
+  imageRegister: RegisterOptions
 }
 
-class ImageUpload extends React.Component<{}, ImageUploadState> {
-  fileInput: React.RefObject<HTMLInputElement>
+const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister }) => {
+  const { register, setValue } = useForm()
+  const [, setImages] = useState<File[]>([])
+  const [imagePreviews, setImagePreviews] = useState<
+    (string | ArrayBuffer | null)[]
+  >([])
 
-  constructor(props: {}) {
-    super(props)
-    this.state = {
-      image: null,
-    }
+  useEffect(() => {
+    register(`images`, imageRegister)
+  }, [register, imageRegister])
 
-    this.fileInput = React.createRef()
-    this.handleUpload = this.handleUpload.bind(this)
-  }
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const files = Array.from(event.target.files)
 
-  handleUpload() {
-    const file = this.fileInput.current?.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        this.setState({
-          image: reader.result,
+      // Append new files to existing images
+      setImages((prevImages) => [...prevImages, ...files])
+
+      Promise.all(
+        files.map((file) => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onloadend = () => {
+              resolve(reader.result)
+            }
+            reader.onerror = (e) => {
+              console.error(`File reading has failed`, e)
+              reject(e)
+            }
+            reader.readAsDataURL(file)
+          })
+        }),
+      )
+        .then((images: any[]) => {
+          // Append new previews to existing image previews
+          setImagePreviews((prevPreviews) => [...prevPreviews, ...images])
         })
-      }
-      reader.readAsDataURL(file)
+        .catch((error) => {
+          console.error(`Error occurred while reading the files`, error)
+        })
+
+      // Append new files to existing images
+      setValue(`images`, (prevImages: File[]) => [...prevImages, ...files])
     }
   }
 
-  render() {
-    const { image } = this.state
-
-    return (
-      <div>
-        <input
-          type="file"
-          ref={this.fileInput}
-          accept="image/*"
-          onChange={this.handleUpload}
-        />
-        {image && (
-          <img
-            src={typeof image === `string` ? image : ``}
-            alt="Preview"
-            style={{ maxHeight: `200px` }}
-          />
-        )}
-      </div>
-    )
+  const handleDelete = (index: number) => {
+    setImages((images) => images.filter((_, i) => i !== index))
+    setImagePreviews((previews) => previews.filter((_, i) => i !== index))
   }
+
+  const classes = useStyles()
+
+  return (
+    <div>
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        hidden
+        id="image-upload"
+        onChange={handleUpload}
+      />
+      <label htmlFor="image-upload">
+        <Button
+          variant="contained"
+          className={classes.customButton}
+          component="span"
+        >
+          Seleccionar imágenes
+        </Button>
+      </label>
+      {imagePreviews.length > 0 && (
+        <ImageList cols={2} variant="masonry">
+          {imagePreviews.map((preview, index) => (
+            <ImageListItem key={preview.toString()}>
+              <img
+                src={typeof preview === `string` ? preview : ``}
+                alt={`Preview ${index}`}
+              />
+              <ImageListItemBar
+                actionIcon={
+                  <IconButton
+                    edge="end"
+                    color="inherit"
+                    onClick={() => handleDelete(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      )}
+    </div>
+  )
 }
 
 export default ImageUpload
