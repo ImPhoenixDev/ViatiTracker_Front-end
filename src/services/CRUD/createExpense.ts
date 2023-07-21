@@ -15,8 +15,6 @@ export interface ExpenseData extends FieldValues {
 export default function createExpense(expense: ExpenseData) {
   const URL: string = process.env.GATSBY_API_URL || `http://localhost:3001`
 
-  console.log(`expense`, expense)
-  console.log(`URL`, URL)
   const token = localStorage.getItem(`psg_auth_token`)
 
   expense.picture = `picture.url`

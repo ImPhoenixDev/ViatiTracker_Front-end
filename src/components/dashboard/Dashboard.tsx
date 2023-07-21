@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import ExpenseRow from '../expenseRow/ExpenseRow'
 import CardTitle from '../cardTitle/CardTitle'
+import getUserByEmail from '@/services/CRUD/getUserByEmail'
 
 type DashboardProps = {
   path: string
@@ -17,6 +18,8 @@ export default function Dashboard({ path }: DashboardProps) {
   console.log(path)
   const [team, setTeam] = useState<string>(``)
 
+  const [isAdmin, setIsAdmin] = useState<boolean>(false)
+
   const handleChange = (event: SelectChangeEvent) => {
     setTeam(String(event.target.value))
   }
@@ -26,7 +29,11 @@ export default function Dashboard({ path }: DashboardProps) {
   useEffect(() => {
     async function init() {
       const userInfo = await user.userInfo()
-      console.log(userInfo)
+      const { email } = userInfo
+      getUserByEmail(email).then((res) => {
+        const role = res.data.role
+        setIsAdmin(role === `Admin`)
+      })
     }
 
     init()
@@ -43,21 +50,25 @@ export default function Dashboard({ path }: DashboardProps) {
       >
         Cerrar sesión
       </button>
-      <div>
-        <FormControl variant="standard" sx={{ minWidth: `100%` }}>
-          <InputLabel id="demo-simple-select-standard-label">Lider</InputLabel>
-          <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
-            value={team}
-            onChange={handleChange}
-            label="Age"
-          >
-            <MenuItem value="Juan Perez">Juan Perez</MenuItem>
-            <MenuItem value="John Doe">John Doe</MenuItem>
-          </Select>
-        </FormControl>
-      </div>
+      {isAdmin && (
+        <div>
+          <FormControl variant="standard" sx={{ minWidth: `100%` }}>
+            <InputLabel id="demo-simple-select-standard-label">
+              Lider
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-standard-label"
+              id="demo-simple-select-standard"
+              value={team}
+              onChange={handleChange}
+              label="Age"
+            >
+              <MenuItem value="Juan Perez">Juan Perez</MenuItem>
+              <MenuItem value="John Doe">John Doe</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      )}
 
       <CardTitle>Facturas registradas</CardTitle>
 
