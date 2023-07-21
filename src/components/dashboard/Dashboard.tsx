@@ -45,9 +45,8 @@ type ExpenseType = {
   admin_message?: string
 }
 
-const user = new PassageUser()
-
 export default function Dashboard({ path }: DashboardProps) {
+  const user = new PassageUser()
   console.log(path)
   const [team, setTeam] = useState<string>(``)
 

@@ -18,17 +18,15 @@ import { dateRegister } from '@/utils/formUtils/dateRegister'
 import createExpense, { ExpenseData } from '@/services/CRUD/createExpense'
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
   customButton: {
-    color: `#FFFFFF`,
     backgroundColor: `#4C9FC1`,
+    color: `#FFFFFF`,
     '&:hover': {
-      borderColor: `#4C9FC1`,
       backgroundColor: `#4C9FC1`,
-      color: `white`,
     },
   },
-}))
+})
 
 type CreateExpenseProps = {
   path?: string
@@ -62,19 +60,16 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
   return (
     <section className="login flex flex-col px-4 py-8 pt-0 h-screen lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
       <BackComponent path="/app/dashboard" />
+      <Stepper activeStep={activeStep} alternativeLabel>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
 
       <CardSection>
         <CardTitle>Crear gasto</CardTitle>
-
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel onClick={() => setActiveStep(index)}>
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
 
         {activeStep === 0 && (
           <FormWrapper<ExpenseData> onSubmit={onSubmit}>
@@ -118,36 +113,51 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
               }}
             />
 
-            <ChipRadioGroup
-              label="Tipo de gasto"
-              name="category"
-              registerOptions={{
-                required: { value: true, message: `Selecciona una opción` },
-              }}
-            />
-            <button type="submit">Next</button>
+            <div className="my-4">
+              <ChipRadioGroup
+                label="Tipo de gasto"
+                name="category"
+                registerOptions={{
+                  required: { value: true, message: `Selecciona una opción` },
+                }}
+              />
+            </div>
+            <button type="submit" className="mx-0 my-4">
+              <Button
+                variant="contained"
+                component="span"
+                className={classes.customButton}
+              >
+                Siguiente
+              </Button>
+            </button>
           </FormWrapper>
         )}
 
         {activeStep === 1 && (
-          <FormWrapper onSubmit={handleFinalSubmit}>
-            <ImageUploadState
-              name="picture"
-              imageRegister={{
-                required: { value: true, message: `Sube foto de las facturas` },
-              }}
-            />
+          <div className="flex flex-col h-full">
+            <FormWrapper onSubmit={handleFinalSubmit}>
+              <ImageUploadState
+                name="picture"
+                imageRegister={{
+                  required: {
+                    value: true,
+                    message: `Sube foto de las facturas`,
+                  },
+                }}
+              />
 
-            <button type="submit">
-              <Button
-                variant="text"
-                className={classes.customButton}
-                component="span"
-              >
-                Enviar gasto
-              </Button>
-            </button>
-          </FormWrapper>
+              <button type="submit" className="my-8 mx-0">
+                <Button
+                  variant="contained"
+                  component="span"
+                  className={classes.customButton}
+                >
+                  Enviar gasto
+                </Button>
+              </button>
+            </FormWrapper>
+          </div>
         )}
       </CardSection>
     </section>

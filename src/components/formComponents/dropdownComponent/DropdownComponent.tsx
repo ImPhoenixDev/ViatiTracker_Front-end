@@ -44,7 +44,7 @@ const DropdownFieldWrapper: React.FC<DropdownFieldWrapperProps> = ({
   }
 
   return (
-    <FormControl error={hasError} variant="standard">
+    <FormControl error={hasError} variant="standard" className="w-full">
       <InputLabel id={`${name}-label`}>{label}</InputLabel>
       <Select
         {...register(name, registerOptions)}

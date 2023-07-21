@@ -41,8 +41,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
     (string | ArrayBuffer | null)[]
   >([])
 
-  const hasError = Boolean(errors.images)
-  const errorMessage = String(errors.images?.message || ``)
+  const hasError = Boolean(errors[name])
+  const errorMessage = String(errors[name]?.message || ``)
 
   useEffect(() => {
     register(name, imageRegister)
