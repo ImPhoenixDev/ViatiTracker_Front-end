@@ -20,10 +20,12 @@ export default function ExpenseRow(expense: ExpenseRowProps) {
   return (
     <tr className="flex border-b border-lightGray py-2">
       <td className="h-12 w-3/6 p-0 m-0">
-        <div className="justify-center items-start flex flex-col">
-          <span className="text-lightGray text-sm">{expense.description}</span>
-          <span className="sans text-base text-primary font-bold">
+        <div className="justify-center items-start flex flex-col w-full">
+          <span className="sans text-base text-primary font-bold overflow-hidden overflow-ellipsis whitespace-nowrap w-full">
             ${expense.amount} - {expense.category}
+          </span>
+          <span className="text-lightGray text-sm overflow-hidden overflow-scroll whitespace-nowrap w-full">
+            {expense.description}
           </span>
         </div>
       </td>

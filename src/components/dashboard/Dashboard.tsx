@@ -8,31 +8,76 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'
 import ExpenseRow from '../expenseRow/ExpenseRow'
 import CardTitle from '../cardTitle/CardTitle'
 import getUserByEmail from '@/services/CRUD/getUserByEmail'
+import getBudgetByUser from '@/services/CRUD/getBudgetByUser'
+import getExpensesByUser from '@/services/CRUD/getExpensesByUser'
 
 type DashboardProps = {
   path: string
   children?: ReactNode
 }
 
+type UserDataType = {
+  id: number
+  name: string
+  email: string
+  role: string
+}
+
+type BudgetDataType = {
+  id: number
+  current_balance: number
+  user_id: number
+  total_expenses: number
+  total_deposits: number
+}
+
+type ExpenseType = {
+  id: number
+  user_id: number
+  date: string
+  site: string
+  project: string
+  picture: string
+  description: string
+  category: string
+  amount: number
+  status: string
+  admin_message?: string
+}
+
+const user = new PassageUser()
+
 export default function Dashboard({ path }: DashboardProps) {
   console.log(path)
   const [team, setTeam] = useState<string>(``)
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
+  const [, setUserData] = useState<UserDataType>({} as UserDataType)
+  const [budget, setBudget] = useState<BudgetDataType>({} as BudgetDataType)
+  const [expensesOfUser, setExpensesOfUser] = useState<ExpenseType[]>([])
 
   const handleChange = (event: SelectChangeEvent) => {
     setTeam(String(event.target.value))
   }
 
-  const user = new PassageUser()
-
   useEffect(() => {
     async function init() {
       const userInfo = await user.userInfo()
       const { email } = userInfo
-      getUserByEmail(email).then((res) => {
+      await getUserByEmail(email).then((res) => {
         const role = res.data.role
+        const userId = res.data.id
+
         setIsAdmin(role === `Admin`)
+        setUserData(res.data)
+
+        getBudgetByUser(userId).then((res) => {
+          setBudget(res.data)
+        })
+
+        getExpensesByUser(userId).then((res) => {
+          setExpensesOfUser(res.data)
+        })
       })
     }
 
@@ -73,29 +118,16 @@ export default function Dashboard({ path }: DashboardProps) {
       <CardTitle>Facturas registradas</CardTitle>
 
       <table className="">
-        <ExpenseRow
-          description="Comida la dona"
-          amount={100}
-          category="Alimentos"
-          status="Aprobada"
-          date="15/07/2021"
-        />
-
-        <ExpenseRow
-          description="Comida la dona"
-          amount={100}
-          category="Alimentos"
-          status="Enviada"
-          date="15/07/2021"
-        />
-
-        <ExpenseRow
-          description="Comida la dona"
-          amount={100}
-          category="Alimentos"
-          status="Rechazada"
-          date="15/07/2021"
-        />
+        {expensesOfUser.map((expense) => (
+          <ExpenseRow
+            description={expense.description}
+            amount={expense.amount}
+            category={expense.category}
+            status={expense.status}
+            date={expense.date}
+            key={expense.id}
+          />
+        ))}
       </table>
 
       <div className="dashboard__footer m-auto mb-0 w-full shadow-lg bg-white rounded-[20px] flex flex-col items-center justify-self-end">
@@ -103,15 +135,21 @@ export default function Dashboard({ path }: DashboardProps) {
           <tbody>
             <tr>
               <td>Depositos</td>
-              <td className="text-end text-green-600">$100.00</td>
+              <td className="text-end text-green-600">
+                ${budget.total_deposits}
+              </td>
             </tr>
             <tr className="border-lightGray border-b">
               <td>Gastos</td>
-              <td className="text-end text-lightGray">$50.00</td>
+              <td className="text-end text-lightGray">
+                ${budget.total_expenses}
+              </td>
             </tr>
             <tr>
               <td className="sans text-primary font-bold">Saldo</td>
-              <td className="text-end text-primary">$50.00</td>
+              <td className="text-end text-primary">
+                ${budget.current_balance}
+              </td>
             </tr>
           </tbody>
         </table>
