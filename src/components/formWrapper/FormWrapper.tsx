@@ -1,13 +1,16 @@
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { useForm, FieldValues, FormProvider } from 'react-hook-form'
 
-interface FormWrapperProps {
+interface FormWrapperProps<T extends FieldValues> {
   children: ReactElement | ReactElement[]
-  onSubmit: (data: FieldValues) => void
+  onSubmit: (data: T) => void
 }
 
-const FormWrapper: React.FC<FormWrapperProps> = ({ children, onSubmit }) => {
-  const methods = useForm()
+const FormWrapper = <T extends FieldValues>({
+  children,
+  onSubmit,
+}: FormWrapperProps<T>): ReactElement => {
+  const methods = useForm<T>()
 
   return (
     <FormProvider {...methods}>

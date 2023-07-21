@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useForm, RegisterOptions } from 'react-hook-form'
+import { useFormContext, RegisterOptions } from 'react-hook-form'
 import {
   Button,
   ImageList,
@@ -13,35 +13,46 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 const useStyles = makeStyles(() => ({
   customButton: {
-    backgroundColor: `#4C9FC1`,
-    color: `#FFF`,
+    color: `#4C9FC1`,
+    borderColor: `#4C9FC1`,
     '&:hover': {
+      borderColor: `#4C9FC1`,
       backgroundColor: `#4C9FC1`,
+      color: `white`,
     },
   },
 }))
 
 type ImageUploadProps = {
   imageRegister: RegisterOptions
+  name: string
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister }) => {
-  const { register, setValue } = useForm()
-  const [, setImages] = useState<File[]>([])
+const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
+  const {
+    formState: { errors },
+    register,
+    unregister,
+    setValue,
+  } = useFormContext()
+
+  const [images, setImages] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<
     (string | ArrayBuffer | null)[]
   >([])
 
+  const hasError = Boolean(errors.images)
+  const errorMessage = String(errors.images?.message || ``)
+
   useEffect(() => {
-    register(`images`, imageRegister)
+    register(name, imageRegister)
+
+    return () => unregister(name)
   }, [register, imageRegister])
 
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const files = Array.from(event.target.files)
-
-      // Append new files to existing images
-      setImages((prevImages) => [...prevImages, ...files])
 
       Promise.all(
         files.map((file) => {
@@ -58,28 +69,37 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister }) => {
           })
         }),
       )
-        .then((images: any[]) => {
+        .then((newImages: any[]) => {
           // Append new previews to existing image previews
-          setImagePreviews((prevPreviews) => [...prevPreviews, ...images])
+          setImagePreviews((prevPreviews) => [...prevPreviews, ...newImages])
+          // Append new files to existing images
+          setImages((prevImages) => [...prevImages, ...files])
+          // Append new files to existing images
+          setValue(name, [...images, ...files], { shouldValidate: true })
+          console.log(`Images`, images)
         })
         .catch((error) => {
           console.error(`Error occurred while reading the files`, error)
         })
-
-      // Append new files to existing images
-      setValue(`images`, (prevImages: File[]) => [...prevImages, ...files])
     }
   }
 
   const handleDelete = (index: number) => {
+    const newImages = images.filter((_, i) => i !== index)
     setImages((images) => images.filter((_, i) => i !== index))
     setImagePreviews((previews) => previews.filter((_, i) => i !== index))
+    setValue(name, newImages, { shouldValidate: true })
+    console.log(`Images`, newImages)
   }
 
   const classes = useStyles()
 
   return (
     <div>
+      {hasError && (
+        <p style={{ color: `red`, fontSize: `14px` }}>{errorMessage}</p>
+      )}
+
       <input
         type="file"
         accept="image/*"
@@ -90,7 +110,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister }) => {
       />
       <label htmlFor="image-upload">
         <Button
-          variant="contained"
+          variant="outlined"
           className={classes.customButton}
           component="span"
         >
@@ -100,7 +120,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister }) => {
       {imagePreviews.length > 0 && (
         <ImageList cols={2} variant="masonry">
           {imagePreviews.map((preview, index) => (
-            <ImageListItem key={preview.toString()}>
+            <ImageListItem key={preview?.toString()}>
               <img
                 src={typeof preview === `string` ? preview : ``}
                 alt={`Preview ${index}`}

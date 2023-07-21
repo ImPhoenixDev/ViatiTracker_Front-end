@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { PassageUser } from '@passageidentity/passage-elements/passage-user'
 import { navigate } from 'gatsby'
 import InputLabel from '@mui/material/InputLabel'
@@ -22,6 +22,16 @@ export default function Dashboard({ path }: DashboardProps) {
   }
 
   const user = new PassageUser()
+
+  useEffect(() => {
+    async function init() {
+      const userInfo = await user.userInfo()
+      console.log(userInfo)
+    }
+
+    init()
+  }, [user])
+
   return (
     <section className="login flex flex-col px-4 py-8 pt-0 h-screen lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
       <button
