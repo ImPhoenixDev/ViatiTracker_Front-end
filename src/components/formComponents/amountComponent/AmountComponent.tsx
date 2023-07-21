@@ -7,12 +7,14 @@ interface AmountComponentProps {
   label: string
   name: string
   registerOptions: RegisterOptions
+  readOnly?: boolean
 }
 
 const AmountComponent: React.FC<AmountComponentProps> = ({
   label,
   name,
   registerOptions,
+  readOnly = false,
 }) => {
   const {
     register,
@@ -40,6 +42,7 @@ const AmountComponent: React.FC<AmountComponentProps> = ({
     <div>
       <NumericFormat
         customInput={TextField}
+        InputProps={{ readOnly }}
         id="standard-basic"
         label={label}
         variant="standard"
@@ -49,7 +52,9 @@ const AmountComponent: React.FC<AmountComponentProps> = ({
         allowNegative={false}
         value={getValues(name)}
         onValueChange={({ value }) => {
-          setValue(name, value, { shouldValidate: true })
+          if (!readOnly) {
+            setValue(name, value, { shouldValidate: true })
+          }
         }}
         error={hasError}
         helperText={errorMessage}

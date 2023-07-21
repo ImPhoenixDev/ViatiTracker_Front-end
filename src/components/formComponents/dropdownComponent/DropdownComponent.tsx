@@ -6,13 +6,14 @@ import {
   FormControl,
   InputLabel,
   FormHelperText,
-} from '@mui/material' // Import FormHelperText
+} from '@mui/material'
 
 type DropdownFieldWrapperProps = {
   label: string
   name: string
   registerOptions: RegisterOptions
-  options: { label: string; value: string }[] // dropdown options
+  options: { label: string; value: string }[]
+  readOnly?: boolean // Add the readOnly prop
 }
 
 const DropdownFieldWrapper: React.FC<DropdownFieldWrapperProps> = ({
@@ -20,6 +21,7 @@ const DropdownFieldWrapper: React.FC<DropdownFieldWrapperProps> = ({
   name,
   registerOptions,
   options,
+  readOnly = false,
 }) => {
   const {
     register,
@@ -40,7 +42,9 @@ const DropdownFieldWrapper: React.FC<DropdownFieldWrapperProps> = ({
   }, [unregister, name])
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setValue(name, event.target.value)
+    if (!readOnly) {
+      setValue(name, event.target.value)
+    }
   }
 
   return (

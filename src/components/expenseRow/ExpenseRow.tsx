@@ -4,6 +4,7 @@ type ExpenseRowProps = {
   category: string
   date: string
   status: string
+  onClick: () => void
 }
 
 export default function ExpenseRow(expense: ExpenseRowProps) {
@@ -18,7 +19,10 @@ export default function ExpenseRow(expense: ExpenseRowProps) {
   }
 
   return (
-    <tr className="flex border-b border-lightGray py-2">
+    <tr
+      className="flex border-b border-lightGray py-2 cursor-pointer"
+      onClick={expense.onClick}
+    >
       <td className="h-12 w-3/6 p-0 m-0">
         <div className="justify-center items-start flex flex-col w-full">
           <span className="sans text-base text-primary font-bold overflow-hidden overflow-ellipsis whitespace-nowrap w-full">

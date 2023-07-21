@@ -11,6 +11,7 @@ interface ChipRadioGroupProps {
   label: string
   name: string
   registerOptions: RegisterOptions
+  readOnly?: boolean
 }
 
 const chipData: string[] = [
@@ -25,6 +26,7 @@ const ChipRadioGroup: React.FC<ChipRadioGroupProps> = ({
   label,
   name,
   registerOptions,
+  readOnly = false,
 }) => {
   const {
     control,
@@ -73,6 +75,7 @@ const ChipRadioGroup: React.FC<ChipRadioGroupProps> = ({
                     label={chip}
                     value={chip}
                     checked={isSelected}
+                    disabled={value && !isSelected && readOnly}
                   />
                 </Chip>
               )

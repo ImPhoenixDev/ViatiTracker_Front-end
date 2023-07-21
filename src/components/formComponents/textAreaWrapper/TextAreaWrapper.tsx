@@ -6,21 +6,25 @@ type TextAreaWrapperProps = {
   label: string
   name: string
   registerOptions: RegisterOptions
+  readOnly?: boolean
 }
 
 const TextAreaWrapper: React.FC<TextAreaWrapperProps> = ({
   label,
   name,
   registerOptions,
+  readOnly = false,
 }) => {
   const {
     register,
     unregister,
     formState: { errors },
+    watch,
   } = useFormContext()
 
   const hasError = Boolean(errors[name])
   const errorMessage = String(errors[name]?.message || ``)
+  const fieldValue = watch(name)
 
   useEffect(() => {
     return () => {
@@ -40,6 +44,8 @@ const TextAreaWrapper: React.FC<TextAreaWrapperProps> = ({
         variant="standard"
         multiline
         rows={4}
+        InputProps={{ readOnly }}
+        value={fieldValue}
       />
     </div>
   )

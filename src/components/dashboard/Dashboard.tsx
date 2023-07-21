@@ -7,6 +7,7 @@ import FormControl from '@mui/material/FormControl'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import ExpenseRow from '../expenseRow/ExpenseRow'
 import CardTitle from '../cardTitle/CardTitle'
+
 import getUserByEmail from '@/services/CRUD/getUserByEmail'
 import getBudgetByUser from '@/services/CRUD/getBudgetByUser'
 import getExpensesByUser from '@/services/CRUD/getExpensesByUser'
@@ -81,7 +82,7 @@ export default function Dashboard({ path }: DashboardProps) {
     }
 
     init()
-  }, [user])
+  })
 
   return (
     <section className="login flex flex-col px-4 py-8 pt-0 h-screen lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
@@ -125,6 +126,11 @@ export default function Dashboard({ path }: DashboardProps) {
             status={expense.status}
             date={expense.date}
             key={expense.id}
+            onClick={() => {
+              navigate(`/app/review-expense`, {
+                state: { expense },
+              })
+            }}
           />
         ))}
       </table>
