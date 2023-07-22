@@ -7,6 +7,7 @@ export default function getExpensesByUser(idUser: number) {
   return axios.get(`${URL}/expenses/user/${idUser}`, {
     headers: {
       Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': true,
     },
   })
 }

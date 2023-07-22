@@ -18,7 +18,12 @@ const FormWrapper = <T extends FieldValues>({
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="grow flex flex-col justify-start"
+      >
+        {children}
+      </form>
     </FormProvider>
   )
 }

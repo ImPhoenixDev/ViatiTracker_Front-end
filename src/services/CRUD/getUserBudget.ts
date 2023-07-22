@@ -6,6 +6,7 @@ export default function getBudgetByUser(email: string) {
   return axios.post(`${URL}/users/email/${email}`, null, {
     headers: {
       Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': true,
     },
   })
 }

@@ -1,11 +1,14 @@
 import axios from 'axios'
 
-export default function getUserByEmail(email: string) {
+export default function updateApproveExpense(id: number, status: string) {
   const URL: string = process.env.GATSBY_API_URL || `http://localhost:3001`
   const token = localStorage.getItem(`psg_auth_token`)
   return axios.post(
-    `${URL}/users/email`,
-    { email },
+    `${URL}/expenses/approve`,
+    {
+      id,
+      status,
+    },
     {
       headers: {
         Authorization: `Bearer ${token}`,

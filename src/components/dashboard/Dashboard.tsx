@@ -47,7 +47,6 @@ type ExpenseType = {
 }
 
 export default function Dashboard({ path }: DashboardProps) {
-  const user = new PassageUser()
   console.log(path)
   const [team, setTeam] = useState<string>(``)
 
@@ -60,9 +59,10 @@ export default function Dashboard({ path }: DashboardProps) {
     setTeam(String(event.target.value))
   }
 
+  const user = new PassageUser()
   useEffect(() => {
     async function init() {
-      const userInfo = await user.userInfo()
+      const userInfo = await new PassageUser().userInfo()
       const { email } = userInfo
       await getUserByEmail(email).then((res) => {
         const role = res.data.role
@@ -82,7 +82,7 @@ export default function Dashboard({ path }: DashboardProps) {
     }
 
     init()
-  })
+  }, [])
 
   return (
     <section className="login flex flex-col px-4 py-8 pt-0 h-screen lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
@@ -141,19 +141,19 @@ export default function Dashboard({ path }: DashboardProps) {
             <tr>
               <td>Depositos</td>
               <td className="text-end text-green-600">
-                ${budget.total_deposits}
+                ${budget.total_deposits?.toFixed(2)}
               </td>
             </tr>
             <tr className="border-lightGray border-b">
               <td>Gastos</td>
               <td className="text-end text-lightGray">
-                ${budget.total_expenses}
+                ${budget.total_expenses?.toFixed(2)}
               </td>
             </tr>
             <tr>
               <td className="sans text-primary font-bold">Saldo</td>
               <td className="text-end text-primary">
-                ${budget.current_balance}
+                ${budget.current_balance?.toFixed(2)}
               </td>
             </tr>
           </tbody>

@@ -12,10 +12,10 @@ export default function ExpenseRow(expense: ExpenseRowProps) {
 
   if (expense.status === `Aprobada`) {
     statusClass = `text-primary`
-  } else if (expense.status === `Enviada`) {
-    statusClass = `text-lightGray`
-  } else {
+  } else if (expense.status === `Rechazada`) {
     statusClass = `text-red-300`
+  } else {
+    statusClass = `text-lightGray`
   }
 
   return (

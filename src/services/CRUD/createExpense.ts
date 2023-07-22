@@ -22,6 +22,7 @@ export default function createExpense(expense: ExpenseData) {
   return axios.post(`${URL}/expenses`, expense, {
     headers: {
       Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': true,
     },
   })
 }
