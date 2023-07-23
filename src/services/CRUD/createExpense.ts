@@ -19,10 +19,9 @@ export default function createExpense(expense: ExpenseData) {
 
   expense.picture = `picture.url`
 
-  return axios.post(`${URL}/expenses`, expense, {
+  return axios.post(`${URL}/expenses/`, expense, {
     headers: {
       Authorization: `Bearer ${token}`,
-      'ngrok-skip-browser-warning': true,
     },
   })
 }
