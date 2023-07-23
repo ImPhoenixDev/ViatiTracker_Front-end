@@ -5,7 +5,7 @@ export default function getUserByEmail(email: string) {
   const token = localStorage.getItem(`psg_auth_token`)
 
   return axios.post(
-    `${URL}/users/email/`,
+    `${URL}/users/email`,
     { email },
     {
       headers: {
