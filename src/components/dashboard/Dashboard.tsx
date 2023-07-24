@@ -46,6 +46,12 @@ type ExpenseType = {
   admin_message?: string
 }
 
+export type UserSessionDataType = {
+  role: string
+  email: string
+  userId: number
+}
+
 export default function Dashboard({ path }: DashboardProps) {
   console.log(path)
   const [team, setTeam] = useState<string>(``)
@@ -63,10 +69,24 @@ export default function Dashboard({ path }: DashboardProps) {
   useEffect(() => {
     async function init() {
       const userInfo = await new PassageUser().userInfo()
-      const { email } = userInfo
+      const email = userInfo?.email
+
+      if (!email) {
+        navigate(`/`)
+        return
+      }
+
       await getUserByEmail(email).then((res) => {
         const role = res.data.role
         const userId = res.data.id
+
+        const userSessionData: UserSessionDataType = {
+          role,
+          email,
+          userId,
+        }
+
+        localStorage.setItem(`userVT`, JSON.stringify(userSessionData))
 
         setIsAdmin(role === `Admin`)
         setUserData(res.data)

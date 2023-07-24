@@ -17,6 +17,8 @@ import { dateRegister } from '@/utils/formUtils/dateRegister'
 
 import createExpense, { ExpenseData } from '@/services/CRUD/createExpense'
 import { makeStyles } from '@mui/styles'
+import { navigate } from 'gatsby'
+import { UserSessionDataType } from '../dashboard/Dashboard'
 
 const useStyles = makeStyles({
   customButton: {
@@ -52,9 +54,13 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
   }
 
   const handleFinalSubmit = (data: ExpenseData) => {
-    const finalData = { ...formData, ...data, user_id: 6 }
-    console.log(finalData)
-    createExpense(finalData)
+    const userSessionData: UserSessionDataType = JSON.parse(
+      localStorage?.getItem(`userVT`) || `{}`,
+    )
+
+    const finalData = { ...formData, ...data, user_id: userSessionData.userId }
+
+    createExpense(finalData).then(() => navigate(`/app/dashboard`))
   }
 
   return (
