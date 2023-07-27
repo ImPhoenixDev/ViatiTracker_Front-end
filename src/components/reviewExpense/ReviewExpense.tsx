@@ -19,6 +19,7 @@ import { makeStyles } from '@mui/styles'
 import updateApproveExpense from '@/services/CRUD/updateApproveExpense'
 import { navigate } from 'gatsby'
 import updateRejectExpense from '@/services/CRUD/updateRejectExpense'
+import ImageListDisplayer from '../imageListDisplayer/ImageListDisplayer'
 
 type ReviewExpenseProps = {
   path?: string
@@ -93,7 +94,7 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
       </Stepper>
 
       <CardSection>
-        <CardTitle>Crear gasto</CardTitle>
+        <CardTitle>Revisar gasto</CardTitle>
 
         {activeStep === 0 && (
           <FormWrapper<ExpenseData> onSubmit={onSubmit} readOnlyData={expense}>
@@ -174,6 +175,7 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
 
         {activeStep === 1 && (
           <div className="flex flex-col h-full">
+            <ImageListDisplayer pictures={expense?.picture_list} />
             <FormWrapper onSubmit={onSubmit}>
               <div className="buttons flex justify-between items-end w-full grow">
                 <button type="button" className="mx-0 h-12" onClick={onReject}>
