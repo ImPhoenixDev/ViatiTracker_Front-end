@@ -19,6 +19,7 @@ import createExpense, { ExpenseData } from '@/services/CRUD/createExpense'
 import { makeStyles } from '@mui/styles'
 import { navigate } from 'gatsby'
 import { UserSessionDataType } from '../dashboard/Dashboard'
+import { windowGlobal } from '@/services/constants'
 
 const useStyles = makeStyles({
   customButton: {
@@ -55,7 +56,7 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
 
   const handleFinalSubmit = (data: ExpenseData) => {
     const userSessionData: UserSessionDataType = JSON.parse(
-      localStorage?.getItem(`userVT`) || `{}`,
+      windowGlobal.localStorage?.getItem(`userVT`) || `{}`,
     )
 
     const finalData = { ...formData, ...data, user_id: userSessionData.userId }
