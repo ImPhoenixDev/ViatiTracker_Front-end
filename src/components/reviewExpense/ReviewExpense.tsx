@@ -83,7 +83,7 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
       <CardSection>
         <CardTitle>Revisar gasto</CardTitle>
 
-        {activeStep === 0 && (
+        <div className={activeStep === 0 ? `flex` : `hidden`}>
           <FormWrapper<ExpenseData> onSubmit={onSubmit} readOnlyData={expense}>
             <div className="flex flex-col h-full justify-between">
               <TextAreaWrapper
@@ -165,36 +165,38 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
               </button>
             </div>
           </FormWrapper>
-        )}
+        </div>
 
-        {activeStep === 1 && (
-          <div className="flex flex-col h-full">
-            <ImageListDisplayer pictures={expense?.picture_list} />
-            <FormWrapper onSubmit={onSubmit}>
-              <div className="buttons flex justify-between items-end w-full grow">
-                <button type="button" className="mx-0 h-12" onClick={onReject}>
-                  <Button
-                    variant="text"
-                    component="span"
-                    className="!text-primary"
-                  >
-                    Rechazar
-                  </Button>
-                </button>
+        <div
+          className={`flex flex-col h-full ${
+            activeStep === 1 ? `flex` : `hidden`
+          }`}
+        >
+          <ImageListDisplayer pictures={expense?.picture_list} />
+          <FormWrapper onSubmit={onSubmit}>
+            <div className="buttons flex justify-between items-end w-full grow">
+              <button type="button" className="mx-0 h-12" onClick={onReject}>
+                <Button
+                  variant="text"
+                  component="span"
+                  className="!text-primary"
+                >
+                  Rechazar
+                </Button>
+              </button>
 
-                <button type="submit" className="mx-0 h-12">
-                  <Button
-                    variant="contained"
-                    component="span"
-                    className="whitespace-nowrap text-sm sans bg-primary"
-                  >
-                    Aprobar
-                  </Button>
-                </button>
-              </div>
-            </FormWrapper>
-          </div>
-        )}
+              <button type="submit" className="mx-0 h-12">
+                <Button
+                  variant="contained"
+                  component="span"
+                  className="whitespace-nowrap text-sm sans bg-primary"
+                >
+                  Aprobar
+                </Button>
+              </button>
+            </div>
+          </FormWrapper>
+        </div>
       </CardSection>
     </section>
   )

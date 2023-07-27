@@ -175,7 +175,7 @@ export default function Dashboard({ path }: DashboardProps) {
           <Button
             variant="contained"
             component="span"
-            className="w-full h-12 mb-4 !bg-primary"
+            className="!w-full !h-12 !mb-4 !bg-primary"
           >
             Enviar gasto
           </Button>
