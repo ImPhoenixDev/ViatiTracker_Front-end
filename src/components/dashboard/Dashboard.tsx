@@ -1,19 +1,17 @@
+import { navigate } from 'gatsby'
 import { ReactNode, useEffect, useState } from 'react'
 import { PassageUser } from '@passageidentity/passage-elements/passage-user'
-import { navigate } from 'gatsby'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import { Button } from '@mui/material'
 import ExpenseRow from '../expenseRow/ExpenseRow'
 import CardTitle from '../cardTitle/CardTitle'
+import UserSelect from '../userSelect/UserSelect'
 
 import getUserByEmail from '@/services/CRUD/getUserByEmail'
 import getBudgetByUser from '@/services/CRUD/getBudgetByUser'
 import getExpensesByUser from '@/services/CRUD/getExpensesByUser'
 
 type DashboardProps = {
-  path: string
+  path?: string
   children?: ReactNode
 }
 
@@ -54,16 +52,13 @@ export type UserSessionDataType = {
 
 export default function Dashboard({ path }: DashboardProps) {
   console.log(path)
-  const [team, setTeam] = useState<string>(``)
-
+  const userSelectedStorage =
+    Number(sessionStorage.getItem(`userSelected`)) || 0
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
   const [, setUserData] = useState<UserDataType>({} as UserDataType)
   const [budget, setBudget] = useState<BudgetDataType>({} as BudgetDataType)
   const [expensesOfUser, setExpensesOfUser] = useState<ExpenseType[]>([])
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setTeam(String(event.target.value))
-  }
+  const [userSelected, setUserSelected] = useState<number>(userSelectedStorage)
 
   const user = new PassageUser()
   useEffect(() => {
@@ -90,19 +85,25 @@ export default function Dashboard({ path }: DashboardProps) {
 
         setIsAdmin(role === `Admin`)
         setUserData(res.data)
-
-        getBudgetByUser(userId).then((res) => {
-          setBudget(res.data)
-        })
-
-        getExpensesByUser(userId).then((res) => {
-          setExpensesOfUser(res.data)
-        })
       })
     }
 
     init()
   }, [])
+
+  useEffect(() => {
+    if (userSelected) {
+      getExpensesByUser(userSelected).then((res) => {
+        setExpensesOfUser(res.data)
+      })
+
+      getBudgetByUser(userSelected).then((res) => {
+        setBudget(res.data)
+      })
+      // Save user selected in session storage to keep it after navigation
+      sessionStorage.setItem(`userSelected`, JSON.stringify(userSelected))
+    }
+  }, [userSelected])
 
   return (
     <section className="login flex flex-col px-4 py-8 pt-0 h-screen lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
@@ -117,21 +118,7 @@ export default function Dashboard({ path }: DashboardProps) {
       </button>
       {isAdmin && (
         <div>
-          <FormControl variant="standard" sx={{ minWidth: `100%` }}>
-            <InputLabel id="demo-simple-select-standard-label">
-              Lider
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={team}
-              onChange={handleChange}
-              label="Age"
-            >
-              <MenuItem value="Juan Perez">Juan Perez</MenuItem>
-              <MenuItem value="John Doe">John Doe</MenuItem>
-            </Select>
-          </FormControl>
+          <UserSelect onSelect={setUserSelected} />
         </div>
       )}
 
@@ -178,14 +165,20 @@ export default function Dashboard({ path }: DashboardProps) {
             </tr>
           </tbody>
         </table>
+
         <button
-          className="group relative h-12 w-10/12 mb-4 overflow-hidden rounded-2xl bg-primary text-lg font-bold text-white"
           onClick={() => {
             navigate(`/app/create-expense`)
           }}
+          className="w-10/12"
         >
-          Agregar gasto
-          <div className="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+          <Button
+            variant="contained"
+            component="span"
+            className="w-full h-12 mb-4 !bg-primary"
+          >
+            Enviar gasto
+          </Button>
         </button>
       </div>
     </section>
