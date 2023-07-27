@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { navigate } from 'gatsby'
 
-import { Stepper, Step, StepLabel, Button } from '@mui/material'
+import { Stepper, Step, StepLabel, Button, Alert } from '@mui/material'
 import BackComponent from '../backComponent/BackComponent'
 import CardSection from '../cardSection/CardSection'
 import ChipRadioGroup from '../chipRadioGroup/ChipRadioGroup'
@@ -29,7 +29,7 @@ type ReviewExpenseProps = {
 }
 
 export default function ReviewExpense({ location }: ReviewExpenseProps) {
-  const expense = location?.state.expense
+  const expense: ExpenseData = location?.state?.expense || ({} as ExpenseData)
 
   const [activeStep, setActiveStep] = useState(0)
 
@@ -71,7 +71,10 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
       </Stepper>
 
       <CardSection>
-        <CardTitle>Revisar gasto</CardTitle>
+        <CardTitle>
+          Revisar gasto
+          <div className="text-sm">Estatus: {expense.status}</div>
+        </CardTitle>
 
         <div className={activeStep === 0 ? `flex` : `hidden`}>
           <FormWrapper<ExpenseData> onSubmit={onSubmit} readOnlyData={expense}>
@@ -133,27 +136,36 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
               </div>
             </div>
 
-            <div className="buttons flex justify-between items-end w-full grow">
-              <button type="button" className="mx-0 h-12" onClick={onReject}>
-                <Button
-                  variant="text"
-                  component="span"
-                  className="!text-primary"
-                >
-                  Rechazar
-                </Button>
-              </button>
+            {expense?.status === `Rechazada` && (
+              <div className="buttons flex justify-between items-end w-full grow h-40">
+                <Alert severity="warning">
+                  Motivo de rechazo: {expense?.admin_message}
+                </Alert>
+              </div>
+            )}
+            {expense?.status !== `Rechazada` && (
+              <div className="buttons flex justify-between items-end w-full grow">
+                <button type="button" className="mx-0 h-12" onClick={onReject}>
+                  <Button
+                    variant="text"
+                    component="span"
+                    className="!text-primary"
+                  >
+                    Rechazar
+                  </Button>
+                </button>
 
-              <button type="submit" className="mx-0 h-12">
-                <Button
-                  variant="contained"
-                  component="span"
-                  className="whitespace-nowrap text-sm sans !bg-primary"
-                >
-                  Aprobar
-                </Button>
-              </button>
-            </div>
+                <button type="submit" className="mx-0 h-12">
+                  <Button
+                    variant="contained"
+                    component="span"
+                    className="whitespace-nowrap text-sm sans !bg-primary"
+                  >
+                    Aprobar
+                  </Button>
+                </button>
+              </div>
+            )}
           </FormWrapper>
         </div>
 

@@ -21,11 +21,6 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({
   const location = useLocation()
 
   const token = windowGlobal.localStorage.getItem(`psg_auth_token`)
-  if (token) {
-    console.log(`user logged in`)
-    console.log(`token`, token)
-  }
-
   if (!token && location.pathname !== `/`) {
     navigate(`/`)
     return null
