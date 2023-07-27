@@ -90,6 +90,7 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
               name="amount"
               registerOptions={amountRegister}
             />
+
             <TextFieldWrapper
               label="Fecha del gasto"
               name="date"
@@ -144,7 +145,7 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
           <div className="flex flex-col h-full">
             <FormWrapper onSubmit={handleFinalSubmit}>
               <ImageUploadState
-                name="picture"
+                name="picture_list"
                 imageRegister={{
                   required: {
                     value: true,

@@ -6,18 +6,15 @@ export interface ExpenseData extends FieldValues {
   user_id: number
   date: string
   description: string
-  picture: string
+  picture_list: string[]
   category: string
   amount: number
-  images: FileList
 }
 
 export default function createExpense(expense: ExpenseData) {
   const URL: string = process.env.GATSBY_API_URL || `http://localhost:3001`
 
   const token = localStorage.getItem(`psg_auth_token`)
-
-  expense.picture = `picture.url`
 
   return axios.post(`${URL}/expenses/`, expense, {
     headers: {

@@ -7,9 +7,9 @@ import {
   ImageListItemBar,
   IconButton,
 } from '@mui/material'
-
-import { makeStyles } from '@mui/styles'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { makeStyles } from '@mui/styles'
+import uploadImage from '@/services/CRUD/uploadImage'
 
 const useStyles = makeStyles(() => ({
   customButton: {
@@ -54,29 +54,49 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
     if (event.target.files) {
       const files = Array.from(event.target.files)
 
-      Promise.all(
-        files.map((file) => {
-          return new Promise((resolve, reject) => {
-            const reader = new FileReader()
-            reader.onloadend = () => {
-              resolve(reader.result)
-            }
-            reader.onerror = (e) => {
-              console.error(`File reading has failed`, e)
-              reject(e)
-            }
-            reader.readAsDataURL(file)
+      const filePromises = files.map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onloadend = () => resolve({ file, result: reader.result })
+          reader.onerror = reject
+          reader.readAsDataURL(file)
+        })
+      })
+
+      Promise.all(filePromises)
+        .then((fileData) => {
+          const uploadPromises = fileData.map(({ file, result }) => {
+            const formData = new FormData()
+            formData.append(`file`, file)
+
+            return uploadImage(formData).then((data) => {
+              if (data.data.url && data.data.identifier) {
+                return { result, identifier: data.data.identifier }
+              } else {
+                throw new Error(`Upload failed`)
+              }
+            })
           })
-        }),
-      )
+
+          return Promise.all(uploadPromises)
+        })
         .then((newImages: any[]) => {
-          // Append new previews to existing image previews
-          setImagePreviews((prevPreviews) => [...prevPreviews, ...newImages])
-          // Append new files to existing images
-          setImages((prevImages) => [...prevImages, ...files])
-          // Append new files to existing images
-          setValue(name, [...images, ...files], { shouldValidate: true })
-          console.log(`Images`, images)
+          console.log(`newImages`, newImages)
+          console.log(`images`, images)
+
+          setImagePreviews((prevPreviews) => [
+            ...prevPreviews,
+            ...newImages.map((image) => image.result),
+          ])
+          setImages((prevImages) => [
+            ...prevImages,
+            ...newImages.map((image) => image.identifier),
+          ])
+          setValue(
+            name,
+            [...images, ...newImages.map((image) => image.identifier)],
+            { shouldValidate: true },
+          )
         })
         .catch((error) => {
           console.error(`Error occurred while reading the files`, error)
@@ -86,10 +106,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
 
   const handleDelete = (index: number) => {
     const newImages = images.filter((_, i) => i !== index)
-    setImages((images) => images.filter((_, i) => i !== index))
+    setImages(newImages)
     setImagePreviews((previews) => previews.filter((_, i) => i !== index))
     setValue(name, newImages, { shouldValidate: true })
-    console.log(`Images`, newImages)
   }
 
   const classes = useStyles()
