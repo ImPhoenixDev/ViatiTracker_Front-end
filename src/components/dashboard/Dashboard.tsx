@@ -9,6 +9,7 @@ import UserSelect from '../userSelect/UserSelect'
 import getUserByEmail from '@/services/CRUD/getUserByEmail'
 import getBudgetByUser from '@/services/CRUD/getBudgetByUser'
 import getExpensesByUser from '@/services/CRUD/getExpensesByUser'
+import { windowGlobal } from '@/services/constants'
 
 type DashboardProps = {
   path?: string
@@ -81,7 +82,10 @@ export default function Dashboard({ path }: DashboardProps) {
           userId,
         }
 
-        localStorage.setItem(`userVT`, JSON.stringify(userSessionData))
+        windowGlobal.localStorage.setItem(
+          `userVT`,
+          JSON.stringify(userSessionData),
+        )
 
         setIsAdmin(role === `Admin`)
         setUserData(res.data)

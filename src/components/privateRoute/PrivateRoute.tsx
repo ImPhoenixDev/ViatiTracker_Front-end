@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { navigate } from 'gatsby'
 import { useLocation } from '@reach/router'
+import { windowGlobal } from '@/services/constants'
 
 type ComponentProps = {
   children?: React.ReactNode
@@ -19,13 +20,11 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({
 }) => {
   const location = useLocation()
 
-  const token = localStorage.getItem(`psg_auth_token`)
+  const token = windowGlobal.localStorage.getItem(`psg_auth_token`)
   if (token) {
     console.log(`user logged in`)
     console.log(`token`, token)
   }
-
-  console.log(`token not found`)
 
   if (!token && location.pathname !== `/`) {
     navigate(`/`)
