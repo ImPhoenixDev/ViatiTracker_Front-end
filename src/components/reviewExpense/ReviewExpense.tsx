@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { navigate } from 'gatsby'
+
 import { Stepper, Step, StepLabel, Button } from '@mui/material'
 import BackComponent from '../backComponent/BackComponent'
 import CardSection from '../cardSection/CardSection'
@@ -9,16 +11,13 @@ import FormWrapper from '../formWrapper/FormWrapper'
 import AmountComponent from '../formComponents/amountComponent/AmountComponent'
 import DropdownFieldWrapper from '../formComponents/dropdownComponent/DropdownComponent'
 import TextAreaWrapper from '../formComponents/textAreaWrapper/TextAreaWrapper'
+import ImageListDisplayer from '../imageListDisplayer/ImageListDisplayer'
 
+import { ExpenseData } from '@/services/CRUD/createExpense'
 import { descriptionRegister } from '../../utils/formUtils/descriptionRegister'
 import { amountRegister } from '@/utils/formUtils/amountRegister'
 import { dateRegister } from '@/utils/formUtils/dateRegister'
-
-import { ExpenseData } from '@/services/CRUD/createExpense'
 import updateApproveExpense from '@/services/CRUD/updateApproveExpense'
-import { navigate } from 'gatsby'
-import updateRejectExpense from '@/services/CRUD/updateRejectExpense'
-import ImageListDisplayer from '../imageListDisplayer/ImageListDisplayer'
 
 type ReviewExpenseProps = {
   path?: string
@@ -52,16 +51,7 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
   // function to reject expense
   const onReject = () => {
     const id = expense?.id
-    const status = `Rechazada`
-    const message: string = prompt(`Escribe un mensaje para el usuario`) || ``
-    updateRejectExpense(id, status, message)
-      .then(() => {
-        navigate(`/app/dashboard`)
-      })
-      .catch((error) => {
-        alert(`Error al actualizar el gasto`)
-        throw new Error(error)
-      })
+    navigate(`/app/reject-expense`, { state: { expenseId: id } })
   }
 
   return (

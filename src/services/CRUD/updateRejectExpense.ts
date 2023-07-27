@@ -7,6 +7,7 @@ export default function updateRejectExpense(
 ) {
   const URL: string = process.env.GATSBY_API_URL || `http://localhost:3001`
   const token = localStorage.getItem(`psg_auth_token`)
+
   return axios.post(
     `${URL}/expenses/reject`,
     {
@@ -17,7 +18,6 @@ export default function updateRejectExpense(
     {
       headers: {
         Authorization: `Bearer ${token}`,
-        'ngrok-skip-browser-warning': true,
       },
     },
   )
