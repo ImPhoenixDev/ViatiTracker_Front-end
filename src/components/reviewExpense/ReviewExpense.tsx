@@ -71,12 +71,21 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
       </Stepper>
 
       <CardSection>
-        <CardTitle>
-          Revisar gasto
-          <div className="text-sm">Estatus: {expense.status}</div>
-        </CardTitle>
+        <CardTitle>Revisar gasto</CardTitle>
+        <div className="text-sm">Estatus: {expense.status}</div>
 
-        <div className={activeStep === 0 ? `flex` : `hidden`}>
+        <div
+          className={`${
+            activeStep === 0 ? `flex flex-col` : `hidden`
+          } h-max overflow-y-scroll`}
+        >
+          {expense?.status === `Rechazada` && (
+            <div className="buttons flex justify-between items-end w-full grow my-8">
+              <Alert severity="error" className="!overflow-scroll">
+                Motivo de rechazo: {expense?.admin_message}
+              </Alert>
+            </div>
+          )}
           <FormWrapper<ExpenseData> onSubmit={onSubmit} readOnlyData={expense}>
             <div className="flex flex-col h-full justify-between">
               <TextAreaWrapper
@@ -136,13 +145,6 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
               </div>
             </div>
 
-            {expense?.status === `Rechazada` && (
-              <div className="buttons flex justify-between items-end w-full grow h-40">
-                <Alert severity="warning">
-                  Motivo de rechazo: {expense?.admin_message}
-                </Alert>
-              </div>
-            )}
             {expense?.status !== `Rechazada` && (
               <div className="buttons flex justify-between items-end w-full grow">
                 <button type="button" className="mx-0 h-12" onClick={onReject}>

@@ -9,7 +9,7 @@ export default function CardSection(props: CardSectionProps) {
   return (
     <div
       {...rest}
-      className="bg-white flex flex-col justify-items-end justify-end shadow rounded-[20px] h-full p-8"
+      className="bg-white flex flex-col justify-items-end justify-end shadow rounded-[20px] h-full p-8 overflow-y-scroll"
     >
       {children}
     </div>
