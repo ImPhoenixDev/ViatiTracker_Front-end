@@ -32,12 +32,7 @@ const config: GatsbyConfig = {
         ],
       },
     },
-    {
-      resolve: `gatsby-plugin-offline`,
-      options: {
-        precachePages: [`/`, `/*`],
-      },
-    },
+    `gatsby-plugin-offline`,
   ],
   jsxRuntime: `automatic`,
 }
