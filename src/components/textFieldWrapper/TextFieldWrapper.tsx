@@ -24,7 +24,7 @@ const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
 
   const hasError = Boolean(errors[name])
   const errorMessage = String(errors[name]?.message || ``)
-  const fieldValue = watch(name)
+  const fieldValue = watch(name) || ``
 
   useEffect(() => {
     return () => {
@@ -33,19 +33,17 @@ const TextFieldWrapper: React.FC<TextFieldWrapperProps> = ({
   }, [unregister, name])
 
   return (
-    <div>
-      <TextField
-        {...register(name, registerOptions)}
-        InputProps={{ readOnly }}
-        value={fieldValue}
-        name={name}
-        error={hasError}
-        helperText={errorMessage}
-        id="standard-basic"
-        label={label}
-        variant="standard"
-      />
-    </div>
+    <TextField
+      {...register(name, registerOptions)}
+      InputProps={{ readOnly }}
+      value={fieldValue}
+      name={name}
+      error={hasError}
+      helperText={errorMessage}
+      id="standard-basic"
+      label={label}
+      variant="standard"
+    />
   )
 }
 

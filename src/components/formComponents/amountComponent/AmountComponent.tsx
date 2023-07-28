@@ -39,27 +39,25 @@ const AmountComponent: React.FC<AmountComponentProps> = ({
   }, [errors, name, watch])
 
   return (
-    <div>
-      <NumericFormat
-        customInput={TextField}
-        InputProps={{ readOnly }}
-        id="standard-basic"
-        label={label}
-        variant="standard"
-        prefix="$"
-        thousandSeparator=","
-        decimalScale={2}
-        allowNegative={false}
-        value={getValues(name)}
-        onValueChange={({ value }) => {
-          if (!readOnly) {
-            setValue(name, value, { shouldValidate: true })
-          }
-        }}
-        error={hasError}
-        helperText={errorMessage}
-      />
-    </div>
+    <NumericFormat
+      customInput={TextField}
+      InputProps={{ readOnly }}
+      id="standard-basic"
+      label={label}
+      variant="standard"
+      prefix="$"
+      thousandSeparator=","
+      decimalScale={2}
+      allowNegative={false}
+      value={getValues(name)}
+      onValueChange={({ value }) => {
+        if (!readOnly) {
+          setValue(name, value, { shouldValidate: true })
+        }
+      }}
+      error={hasError}
+      helperText={errorMessage}
+    />
   )
 }
 
