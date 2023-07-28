@@ -33,21 +33,19 @@ const TextAreaWrapper: React.FC<TextAreaWrapperProps> = ({
   }, [unregister, name])
 
   return (
-    <div>
-      <TextField
-        {...register(name, registerOptions)}
-        name={name}
-        error={hasError}
-        helperText={errorMessage}
-        id="standard-multiline-static"
-        label={label}
-        variant="standard"
-        multiline
-        rows={4}
-        InputProps={{ readOnly }}
-        value={fieldValue}
-      />
-    </div>
+    <TextField
+      {...register(name, registerOptions)}
+      name={name}
+      error={hasError}
+      helperText={errorMessage}
+      id="standard-multiline-static"
+      label={label}
+      variant="standard"
+      multiline
+      rows={4}
+      InputProps={{ readOnly }}
+      value={fieldValue}
+    />
   )
 }
 

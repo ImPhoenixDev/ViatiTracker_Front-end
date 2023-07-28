@@ -8,7 +8,8 @@ import TextFieldWrapper from '../textFieldWrapper/TextFieldWrapper'
 import CustomDatePicker from '../customDatePicker/CustomDatePicker'
 import AmountComponent from '../formComponents/amountComponent/AmountComponent'
 import { amountRegister } from '@/utils/formUtils/amountRegister'
-import ImageUpload from '../imageUploadState/ImageUploadState'
+// import ImageUpload from '../imageUploadState/ImageUploadState'
+import UserSelectorComponent from '../formComponents/userSelectorComponent/UserSelectorComponent'
 
 type DepositType = {
   user_id: number
@@ -37,11 +38,7 @@ export default function CreateNewDeposit() {
               registerOptions={{ required: true }}
             />
 
-            <TextFieldWrapper
-              name="user_id"
-              label="Lider de equipo"
-              registerOptions={{ required: true }}
-            />
+            <UserSelectorComponent name="user_id" />
 
             <AmountComponent
               label="Monto"
@@ -51,10 +48,7 @@ export default function CreateNewDeposit() {
 
             <CustomDatePicker name="date" required />
 
-            <ImageUpload
-              name="picture"
-              imageRegister={{ required: `Agrega una imagen` }}
-            />
+            {/* <ImageUpload name="picture"  imageRegister={{ required: `Agrega una imagen` }} /> */}
           </div>
           <div className="buttons flex justify-between items-end w-full m-auto mb-0">
             <button type="submit" className="mx-0 h-12 w-full">

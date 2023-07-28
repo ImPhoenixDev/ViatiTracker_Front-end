@@ -40,7 +40,7 @@ const CustomDatePicker: FC<CustomDatePickerProps> = ({
         format="DD/MMM/YYYY"
         onChange={(date) => {
           if (date) {
-            setValue(name, date)
+            setValue(name, date.toDate().toISOString())
           }
         }}
         className={className}

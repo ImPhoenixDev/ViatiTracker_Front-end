@@ -41,7 +41,7 @@ const AmountComponent: React.FC<AmountComponentProps> = ({
   return (
     <NumericFormat
       customInput={TextField}
-      InputProps={{ readOnly }}
+      InputProps={{ readOnly, type: `tel` }}
       id="standard-basic"
       label={label}
       variant="standard"
