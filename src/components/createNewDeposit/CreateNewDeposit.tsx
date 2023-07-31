@@ -1,5 +1,4 @@
 import { Button } from '@mui/material'
-
 import BackComponent from '../backComponent/BackComponent'
 import CardSection from '../cardSection/CardSection'
 import CardTitle from '../cardTitle/CardTitle'
@@ -7,11 +6,13 @@ import FormWrapper from '../formWrapper/FormWrapper'
 import TextFieldWrapper from '../textFieldWrapper/TextFieldWrapper'
 import CustomDatePicker from '../customDatePicker/CustomDatePicker'
 import AmountComponent from '../formComponents/amountComponent/AmountComponent'
-import { amountRegister } from '@/utils/formUtils/amountRegister'
-// import ImageUpload from '../imageUploadState/ImageUploadState'
 import UserSelectorComponent from '../formComponents/userSelectorComponent/UserSelectorComponent'
 import { DepositType } from '@/utils/ts-extend/commonTypes'
+import { amountRegister } from '@/utils/formUtils/amountRegister'
+// import ImageUpload from '../imageUploadState/ImageUploadState'
+import createDeposit from '@/services/CRUD/createDeposit'
 import { windowGlobal } from '@/services/constants'
+import { navigate } from 'gatsby'
 
 export default function CreateNewDeposit() {
   function handleSubmit(data: DepositType) {
@@ -24,6 +25,15 @@ export default function CreateNewDeposit() {
 
     const id = Number(userInfo)
     data.admin_id = id
+    data.picture_list = [`https://picsum.photos/200/300`]
+    createDeposit(data)
+      .then(() => {
+        navigate(`/app/dashboard`)
+      })
+      .catch((err: any) => {
+        alert(`Error al crear el deposito`)
+        throw new Error(err)
+      })
   }
 
   return (

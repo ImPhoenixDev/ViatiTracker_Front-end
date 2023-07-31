@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 
-export const windowGlobal = typeof window !== `undefined` && window
+export const windowGlobal: any = typeof window !== `undefined` && window
 export const URL: string = process.env.GATSBY_API_URL || `http://localhost:3001`
 export const token =
   windowGlobal && windowGlobal.localStorage
@@ -20,7 +20,7 @@ export function basePost(endpoint: string, body?: any, replaceHeaders?: any) {
       },
     })
     .catch((error) => {
-      if (error.response.status === 401) {
+      if (error?.response?.status === 401) {
         localStorage.removeItem(`psg_auth_token`)
         window.location.href = `/login`
       }
