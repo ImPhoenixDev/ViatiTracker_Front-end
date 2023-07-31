@@ -20,7 +20,10 @@ interface UserSelectProps {
 
 const UserSelect: React.FC<UserSelectProps> = ({ onSelect }) => {
   const [users, setUsers] = useState<User[]>([] as User[])
-  const [selectedUser, setSelectedUser] = useState<number | null>(null)
+  const defaultUserSelected = Number(sessionStorage.getItem(`userSelected`))
+  const [selectedUser, setSelectedUser] = useState<number | null>(
+    defaultUserSelected,
+  )
 
   // Fetch users when component mounts
   useEffect(() => {
