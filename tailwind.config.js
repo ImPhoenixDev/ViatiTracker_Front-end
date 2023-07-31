@@ -6,8 +6,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      height: {
+        screen: [`100vh /* fallback for Opera, IE and etc. */`, `100dvh`],
+      },
       fonts: {
         sans: [`Manrope`, `system-ui`, `sans-serif`],
+      },
+      gridTemplateRows: {
+        layout: `1fr 50px`,
       },
       colors: {
         dark: `#464646`,

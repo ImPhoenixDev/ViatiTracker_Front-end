@@ -10,6 +10,7 @@ import getUserByEmail from '@/services/CRUD/getUserByEmail'
 import getBudgetByUser from '@/services/CRUD/getBudgetByUser'
 import getExpensesByUser from '@/services/CRUD/getExpensesByUser'
 import { windowGlobal } from '@/services/constants'
+import MobileLayout from '@/layouts/mobileLayout/MobileLayout'
 
 type DashboardProps = {
   path?: string
@@ -110,81 +111,83 @@ export default function Dashboard({ path }: DashboardProps) {
   }, [userSelected])
 
   return (
-    <section className="login flex flex-col px-4 py-8 pt-0 h-screen lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
-      <button
-        className="h-12 w-full text-end overflow-hidden rounded-lg text-lg italic"
-        onClick={() => {
-          user.signOut()
-          navigate(`/`)
-        }}
-      >
-        Cerrar sesión
-      </button>
-      {isAdmin && (
-        <div>
-          <UserSelect onSelect={setUserSelected} />
-        </div>
-      )}
+    <MobileLayout currentPath="expenses">
+      <section className="login flex flex-col h-full px-4 py-8 pt-0 m-auto bg-[#F9F9FB]">
+        <button
+          className="h-12 w-full text-end overflow-hidden rounded-lg text-lg italic"
+          onClick={() => {
+            user.signOut()
+            navigate(`/`)
+          }}
+        >
+          Cerrar sesión
+        </button>
+        {isAdmin && (
+          <div>
+            <UserSelect onSelect={setUserSelected} />
+          </div>
+        )}
 
-      <CardTitle>Facturas registradas</CardTitle>
+        <CardTitle>Facturas registradas</CardTitle>
 
-      <table className="">
-        {expensesOfUser.map((expense) => (
-          <ExpenseRow
-            description={expense.description}
-            amount={expense.amount}
-            category={expense.category}
-            status={expense.status}
-            date={expense.date}
-            key={expense.id}
-            onClick={() => {
-              navigate(`/app/review-expense`, {
-                state: { expense },
-              })
-            }}
-          />
-        ))}
-      </table>
-
-      <div className="dashboard__footer m-auto mb-0 w-full shadow-lg bg-white rounded-[20px] flex flex-col items-center justify-self-end">
-        <table className="w-10/12 my-8 text-lightGray">
-          <tbody>
-            <tr>
-              <td>Depositos</td>
-              <td className="text-end text-green-600">
-                ${budget.total_deposits?.toFixed(2)}
-              </td>
-            </tr>
-            <tr className="border-lightGray border-b">
-              <td>Gastos</td>
-              <td className="text-end text-lightGray">
-                ${budget.total_expenses?.toFixed(2)}
-              </td>
-            </tr>
-            <tr>
-              <td className="sans text-primary font-bold">Saldo</td>
-              <td className="text-end text-primary">
-                ${budget.current_balance?.toFixed(2)}
-              </td>
-            </tr>
-          </tbody>
+        <table className="">
+          {expensesOfUser.map((expense) => (
+            <ExpenseRow
+              description={expense.description}
+              amount={expense.amount}
+              category={expense.category}
+              status={expense.status}
+              date={expense.date}
+              key={expense.id}
+              onClick={() => {
+                navigate(`/app/review-expense`, {
+                  state: { expense },
+                })
+              }}
+            />
+          ))}
         </table>
 
-        <button
-          onClick={() => {
-            navigate(`/app/create-expense`)
-          }}
-          className="w-10/12"
-        >
-          <Button
-            variant="contained"
-            component="span"
-            className="!w-full !h-12 !mb-4 !bg-primary"
+        <div className="dashboard__footer m-auto mb-0 w-full shadow-lg bg-white rounded-[20px] flex flex-col items-center justify-self-end">
+          <table className="w-10/12 my-8 text-lightGray">
+            <tbody>
+              <tr>
+                <td>Depositos</td>
+                <td className="text-end text-green-600">
+                  ${budget.total_deposits?.toFixed(2)}
+                </td>
+              </tr>
+              <tr className="border-lightGray border-b">
+                <td>Gastos</td>
+                <td className="text-end text-lightGray">
+                  ${budget.total_expenses?.toFixed(2)}
+                </td>
+              </tr>
+              <tr>
+                <td className="sans text-primary font-bold">Saldo</td>
+                <td className="text-end text-primary">
+                  ${budget.current_balance?.toFixed(2)}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button
+            onClick={() => {
+              navigate(`/app/create-expense`)
+            }}
+            className="w-10/12"
           >
-            Enviar gasto
-          </Button>
-        </button>
-      </div>
-    </section>
+            <Button
+              variant="contained"
+              component="span"
+              className="!w-full !h-12 !mb-4 !bg-primary"
+            >
+              Enviar gasto
+            </Button>
+          </button>
+        </div>
+      </section>
+    </MobileLayout>
   )
 }
