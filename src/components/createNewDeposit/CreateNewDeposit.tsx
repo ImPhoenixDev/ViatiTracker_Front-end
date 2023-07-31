@@ -10,19 +10,20 @@ import AmountComponent from '../formComponents/amountComponent/AmountComponent'
 import { amountRegister } from '@/utils/formUtils/amountRegister'
 // import ImageUpload from '../imageUploadState/ImageUploadState'
 import UserSelectorComponent from '../formComponents/userSelectorComponent/UserSelectorComponent'
-
-type DepositType = {
-  user_id: number
-  date: string
-  picture: string
-  description: string
-  category: string
-  amount: number
-}
+import { DepositType } from '@/utils/ts-extend/commonTypes'
+import { windowGlobal } from '@/services/constants'
 
 export default function CreateNewDeposit() {
   function handleSubmit(data: DepositType) {
-    console.log(data)
+    const userInfo =
+      JSON.parse(windowGlobal.localStorage.getItem(`userVT`)).userId || null
+
+    if (!userInfo) {
+      throw new Error(`User info not found`)
+    }
+
+    const id = Number(userInfo)
+    data.admin_id = id
   }
 
   return (
@@ -46,7 +47,7 @@ export default function CreateNewDeposit() {
               registerOptions={amountRegister}
             />
 
-            <CustomDatePicker name="date" required />
+            <CustomDatePicker name="deposit_date" required />
 
             {/* <ImageUpload name="picture"  imageRegister={{ required: `Agrega una imagen` }} /> */}
           </div>
