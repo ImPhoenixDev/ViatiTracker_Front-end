@@ -86,7 +86,8 @@ export default function Dashboard({ path }: DashboardProps) {
           `userVT`,
           JSON.stringify(userSessionData),
         )
-
+        sessionStorage.setItem(`userSelected`, userId)
+        setUserSelected(userId)
         setIsAdmin(role === `Admin`)
         setUserData(res.data)
       })
@@ -98,7 +99,8 @@ export default function Dashboard({ path }: DashboardProps) {
   useEffect(() => {
     if (userSelected) {
       getExpensesByUser(userSelected).then((res) => {
-        setExpensesOfUser(res.data)
+        // last expense first
+        setExpensesOfUser(res.data.reverse())
       })
 
       getBudgetByUser(userSelected).then((res) => {
@@ -177,7 +179,7 @@ export default function Dashboard({ path }: DashboardProps) {
               component="span"
               className="!w-full !h-12 !mb-4 !bg-primary"
             >
-              Enviar gasto
+              Nuevo gasto
             </Button>
           </button>
         </div>
