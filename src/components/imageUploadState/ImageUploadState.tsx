@@ -6,6 +6,7 @@ import {
   ImageListItem,
   ImageListItemBar,
   IconButton,
+  CircularProgress,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { makeStyles } from '@mui/styles'
@@ -40,6 +41,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
   const [imagePreviews, setImagePreviews] = useState<
     (string | ArrayBuffer | null)[]
   >([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const hasError = Boolean(errors[name])
   const errorMessage = String(errors[name]?.message || ``)
@@ -52,6 +54,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
 
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
+      setIsLoading(true)
+
       const files = Array.from(event.target.files)
 
       const filePromises = files.map((file) => {
@@ -101,6 +105,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
         .catch((error) => {
           console.error(`Error occurred while reading the files`, error)
         })
+        .finally(() => {
+          setIsLoading(false)
+        })
     }
   }
 
@@ -118,7 +125,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
       {hasError && (
         <p style={{ color: `red`, fontSize: `14px` }}>{errorMessage}</p>
       )}
-
       <input
         type="file"
         accept="image/*"
@@ -136,6 +142,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
           Seleccionar imágenes
         </Button>
       </label>
+      {isLoading && <CircularProgress />}
+      {` `}
+      {/* Show loading spinner while uploading */}
       {imagePreviews.length > 0 && (
         <ImageList cols={2} variant="masonry">
           {imagePreviews.map((preview, index) => (

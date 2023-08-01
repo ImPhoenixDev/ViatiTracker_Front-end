@@ -9,7 +9,7 @@ import AmountComponent from '../formComponents/amountComponent/AmountComponent'
 import UserSelectorComponent from '../formComponents/userSelectorComponent/UserSelectorComponent'
 import { DepositType } from '@/utils/ts-extend/commonTypes'
 import { amountRegister } from '@/utils/formUtils/amountRegister'
-// import ImageUpload from '../imageUploadState/ImageUploadState'
+import ImageUpload from '../imageUploadState/ImageUploadState'
 import createDeposit from '@/services/CRUD/createDeposit'
 import { windowGlobal } from '@/services/constants'
 import { navigate } from 'gatsby'
@@ -48,18 +48,17 @@ export default function CreateNewDeposit() {
               label="Descripción"
               registerOptions={{ required: true }}
             />
-
             <UserSelectorComponent name="user_id" />
-
             <AmountComponent
               label="Monto"
               name="amount"
               registerOptions={amountRegister}
             />
-
             <CustomDatePicker name="deposit_date" required />
-
-            {/* <ImageUpload name="picture"  imageRegister={{ required: `Agrega una imagen` }} /> */}
+            <ImageUpload
+              name="picture_list"
+              imageRegister={{ required: `Agrega una imagen` }}
+            />
           </div>
           <div className="buttons flex justify-between items-end w-full m-auto mb-0">
             <button type="submit" className="mx-0 h-12 w-full">
