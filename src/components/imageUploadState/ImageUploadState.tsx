@@ -9,20 +9,7 @@ import {
   CircularProgress,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { makeStyles } from '@mui/styles'
 import uploadImage from '@/services/CRUD/uploadImage'
-
-const useStyles = makeStyles(() => ({
-  customButton: {
-    color: `#4C9FC1`,
-    borderColor: `#4C9FC1`,
-    '&:hover': {
-      borderColor: `#4C9FC1`,
-      backgroundColor: `#4C9FC1`,
-      color: `white`,
-    },
-  },
-}))
 
 type ImageUploadProps = {
   imageRegister: RegisterOptions
@@ -118,8 +105,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
     setValue(name, newImages, { shouldValidate: true })
   }
 
-  const classes = useStyles()
-
   return (
     <div>
       {hasError && (
@@ -136,7 +121,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ imageRegister, name }) => {
       <label htmlFor="image-upload">
         <Button
           variant="outlined"
-          className={classes.customButton}
+          className="!w-full !h-12 !mb-4 !bg-transparent !text-primary !border-primary"
           component="span"
         >
           Seleccionar imágenes
