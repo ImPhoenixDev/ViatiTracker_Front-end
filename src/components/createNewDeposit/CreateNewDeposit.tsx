@@ -48,13 +48,21 @@ export default function CreateNewDeposit() {
               label="Descripción"
               registerOptions={{ required: true }}
             />
+
             <UserSelectorComponent name="user_id" />
+
             <AmountComponent
               label="Monto"
               name="amount"
               registerOptions={amountRegister}
             />
-            <CustomDatePicker name="deposit_date" required />
+
+            <CustomDatePicker
+              textDisplay="Fecha del deposito"
+              name="deposit_date"
+              required
+            />
+
             <ImageUpload
               name="picture_list"
               imageRegister={{ required: `Agrega una imagen` }}
