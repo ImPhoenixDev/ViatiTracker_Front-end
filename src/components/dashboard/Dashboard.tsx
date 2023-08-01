@@ -120,24 +120,26 @@ export default function Dashboard({ path }: DashboardProps) {
 
         <CardTitle>Facturas registradas</CardTitle>
 
-        <div className="overflow-y-scroll">
-          <table className="w-full">
-            {expensesOfUser.map((expense) => (
-              <ExpenseRow
-                description={expense.description}
-                amount={expense.amount}
-                category={expense.category}
-                status={expense.status}
-                date={expense.date}
-                key={expense.id}
-                onClick={() => {
-                  navigate(`/app/review-expense`, {
-                    state: { expense },
-                  })
-                }}
-              />
-            ))}
-          </table>
+        <div className="overflow-y-scroll max-h-96">
+          <div className="h-full w-full">
+            <table className="w-full">
+              {expensesOfUser.map((expense) => (
+                <ExpenseRow
+                  description={expense.description}
+                  amount={expense.amount}
+                  category={expense.category}
+                  status={expense.status}
+                  date={expense.date}
+                  key={expense.id}
+                  onClick={() => {
+                    navigate(`/app/review-expense`, {
+                      state: { expense },
+                    })
+                  }}
+                />
+              ))}
+            </table>
+          </div>
         </div>
 
         <div className="dashboard__footer m-auto mb-0 w-full shadow-lg bg-white rounded-[20px] flex flex-col items-center justify-self-end">
