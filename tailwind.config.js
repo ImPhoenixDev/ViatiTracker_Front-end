@@ -3,6 +3,7 @@ module.exports = {
   content: [
     `./src/pages/**/*.{js,jsx,ts,tsx}`,
     `./src/components/**/*.{js,jsx,ts,tsx}`,
+    `./src/layouts/**/*.{js,jsx,ts,tsx}`,
   ],
   theme: {
     extend: {
@@ -13,11 +14,12 @@ module.exports = {
         sans: [`Manrope`, `system-ui`, `sans-serif`],
       },
       gridTemplateRows: {
-        layout: `1fr 50px`,
+        layout: `auto 1fr`,
       },
       colors: {
         dark: `#464646`,
         lightGray: `#A1A7B0`,
+        boneBg: `#F9F9FB`,
         primary: `#4C9FC1`,
       },
     },

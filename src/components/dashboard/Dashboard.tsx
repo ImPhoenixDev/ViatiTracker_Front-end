@@ -62,7 +62,6 @@ export default function Dashboard({ path }: DashboardProps) {
   const [expensesOfUser, setExpensesOfUser] = useState<ExpenseType[]>([])
   const [userSelected, setUserSelected] = useState<number>(userSelectedStorage)
 
-  const user = new PassageUser()
   useEffect(() => {
     async function init() {
       const userInfo = await new PassageUser().userInfo()
@@ -112,16 +111,7 @@ export default function Dashboard({ path }: DashboardProps) {
 
   return (
     <MobileLayout currentPath="expenses">
-      <section className="login flex flex-col h-full px-4 py-8 pt-0 m-auto bg-[#F9F9FB]">
-        <button
-          className="h-12 w-full text-end overflow-hidden rounded-lg text-lg italic"
-          onClick={() => {
-            user.signOut()
-            navigate(`/`)
-          }}
-        >
-          Cerrar sesión
-        </button>
+      <section className="flex flex-col w-full h-full py-8 px-4 pt-0 m-auto bg-[#F9F9FB]">
         {isAdmin && (
           <div>
             <UserSelect onSelect={setUserSelected} />

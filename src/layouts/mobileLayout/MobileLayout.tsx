@@ -2,9 +2,15 @@ import { ReactNode, useState } from 'react'
 import * as React from 'react'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
-import { AccountBalanceWallet, Analytics, LocalAtm } from '@mui/icons-material'
+import {
+  AccountBalanceWallet,
+  Analytics,
+  ExitToApp,
+  LocalAtm,
+} from '@mui/icons-material'
 import { windowGlobal } from '@/services/constants'
 import { navigate } from 'gatsby'
+import { PassageUser } from '@passageidentity/passage-elements/passage-user'
 
 type MobileLayoutProps = {
   children?: ReactNode
@@ -25,19 +31,21 @@ export default function MobileLayout({
     JSON.parse(windowGlobal?.localStorage.getItem(`userVT`))?.role ===
       `Admin` || false
 
+  const user = new PassageUser()
+
   return (
-    <div className="h-screen grid grid-rows-layout lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
-      {children}
+    <div className="h-screen grid grid-rows-layout w-full lg:w-3/6 py-4 m-auto xl:w-1/6 bg-boneBg">
       <BottomNavigation
-        // sx={{ width: 500 }}
+        showLabels
         value={value}
         onChange={handleChange}
+        className="!m-4 !bg-primary !rounded-xl"
       >
         <BottomNavigationAction
           label="Gastos"
           value="expenses"
           icon={<AccountBalanceWallet />}
-          className="!text-primary"
+          className="!text-white"
           onClick={() => {
             navigate(`/app/dashboard`)
           }}
@@ -46,7 +54,7 @@ export default function MobileLayout({
           label="Depósitos"
           value="deposits"
           icon={<LocalAtm />}
-          className="!text-primary"
+          className="!text-white"
           onClick={() => {
             navigate(`/app/create-deposit`)
           }}
@@ -57,10 +65,22 @@ export default function MobileLayout({
             label="Reportes"
             value="reports"
             icon={<Analytics />}
-            className="!text-primary"
+            className="!text-white"
           />
         )}
+
+        <BottomNavigationAction
+          label="Salir"
+          value="exit"
+          icon={<ExitToApp />}
+          className="!text-white"
+          onClick={() => {
+            user.signOut()
+            navigate(`/`)
+          }}
+        />
       </BottomNavigation>
+      {children}
     </div>
   )
 }
