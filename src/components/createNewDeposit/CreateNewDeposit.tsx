@@ -65,7 +65,7 @@ export default function CreateNewDeposit() {
               <Button
                 variant="contained"
                 component="span"
-                className="whitespace-nowrap text-sm sans !bg-primary !w-full"
+                className="!w-full !h-12 !mb-4 !bg-primary"
               >
                 Registrar deposito
               </Button>

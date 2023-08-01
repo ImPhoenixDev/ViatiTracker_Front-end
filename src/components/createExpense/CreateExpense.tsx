@@ -16,20 +16,9 @@ import { amountRegister } from '@/utils/formUtils/amountRegister'
 import { dateRegister } from '@/utils/formUtils/dateRegister'
 
 import createExpense, { ExpenseData } from '@/services/CRUD/createExpense'
-import { makeStyles } from '@mui/styles'
 import { navigate } from 'gatsby'
 import { UserSessionDataType } from '../dashboard/Dashboard'
 import { windowGlobal } from '@/services/constants'
-
-const useStyles = makeStyles({
-  customButton: {
-    backgroundColor: `#4C9FC1`,
-    color: `#FFFFFF`,
-    '&:hover': {
-      backgroundColor: `#4C9FC1`,
-    },
-  },
-})
 
 type CreateExpenseProps = {
   path?: string
@@ -45,8 +34,6 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
   const [formData, setFormData] = useState<PartialExpenseData>(
     {} as PartialExpenseData,
   )
-
-  const classes = useStyles()
 
   const onSubmit = (data: PartialExpenseData) => {
     setFormData(data)
@@ -76,99 +63,97 @@ export default function CreateExpense({ path }: CreateExpenseProps) {
       </Stepper>
 
       <CardSection>
-        <div className="h-full">
-          <CardTitle>Crear gasto</CardTitle>
+        <CardTitle>Crear gasto</CardTitle>
 
-          {activeStep === 0 && (
-            <FormWrapper<ExpenseData> onSubmit={onSubmit}>
-              <TextAreaWrapper
-                label="Descripción"
-                name="description"
-                registerOptions={descriptionRegister}
-              />
+        {activeStep === 0 && (
+          <FormWrapper<ExpenseData> onSubmit={onSubmit}>
+            <TextAreaWrapper
+              label="Descripción"
+              name="description"
+              registerOptions={descriptionRegister}
+            />
 
-              <AmountComponent
-                label="Monto"
-                name="amount"
-                registerOptions={amountRegister}
-              />
+            <AmountComponent
+              label="Monto"
+              name="amount"
+              registerOptions={amountRegister}
+            />
 
-              <TextFieldWrapper
-                label="Fecha del gasto"
-                name="date"
-                registerOptions={dateRegister}
-              />
+            <TextFieldWrapper
+              label="Fecha del gasto"
+              name="date"
+              registerOptions={dateRegister}
+            />
 
-              <DropdownFieldWrapper
-                label="Proyecto"
-                name="project"
-                options={[
-                  { value: `1`, label: `Comida` },
-                  { value: `2`, label: `Transporte` },
-                  { value: `3`, label: `Salud` },
-                  { value: `4`, label: `Educación` },
-                  { value: `5`, label: `Entretenimiento` },
-                ]}
+            <DropdownFieldWrapper
+              label="Proyecto"
+              name="project"
+              options={[
+                { value: `1`, label: `Comida` },
+                { value: `2`, label: `Transporte` },
+                { value: `3`, label: `Salud` },
+                { value: `4`, label: `Educación` },
+                { value: `5`, label: `Entretenimiento` },
+              ]}
+              registerOptions={{
+                required: { value: true, message: `Selecciona una opción` },
+              }}
+            />
+
+            <TextFieldWrapper
+              label="Sitio"
+              name="site"
+              registerOptions={{
+                required: { value: true, message: `Selecciona una opción` },
+              }}
+            />
+
+            <div className="my-4">
+              <ChipRadioGroup
+                label="Tipo de gasto"
+                name="category"
                 registerOptions={{
                   required: { value: true, message: `Selecciona una opción` },
                 }}
               />
+            </div>
+            <button type="submit" className="mx-0 my-4">
+              <Button
+                variant="contained"
+                component="span"
+                className="!w-full !h-12 !mb-4 !bg-primary"
+              >
+                Siguiente
+              </Button>
+            </button>
+          </FormWrapper>
+        )}
 
-              <TextFieldWrapper
-                label="Sitio"
-                name="site"
-                registerOptions={{
-                  required: { value: true, message: `Selecciona una opción` },
+        {activeStep === 1 && (
+          <div className="flex flex-col w-full grow">
+            <FormWrapper onSubmit={handleFinalSubmit}>
+              <ImageUploadState
+                name="picture_list"
+                imageRegister={{
+                  required: {
+                    value: true,
+                    message: `Sube foto de las facturas`,
+                  },
                 }}
               />
 
-              <div className="my-4">
-                <ChipRadioGroup
-                  label="Tipo de gasto"
-                  name="category"
-                  registerOptions={{
-                    required: { value: true, message: `Selecciona una opción` },
-                  }}
-                />
-              </div>
-              <button type="submit" className="mx-0 my-4">
+              <button type="submit" className="mx-0 m-auto mb-0">
                 <Button
                   variant="contained"
                   component="span"
-                  className={classes.customButton}
+                  className="!w-full !h-12 !mb-4 !bg-primary"
                 >
-                  Siguiente
+                  Enviar gasto
                 </Button>
               </button>
             </FormWrapper>
-          )}
-
-          {activeStep === 1 && (
-            <div className="flex flex-col h-full">
-              <FormWrapper onSubmit={handleFinalSubmit}>
-                <ImageUploadState
-                  name="picture_list"
-                  imageRegister={{
-                    required: {
-                      value: true,
-                      message: `Sube foto de las facturas`,
-                    },
-                  }}
-                />
-
-                <button type="submit" className="my-8 mx-0">
-                  <Button
-                    variant="contained"
-                    component="span"
-                    className={classes.customButton}
-                  >
-                    Enviar gasto
-                  </Button>
-                </button>
-              </FormWrapper>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </CardSection>
     </section>
   )
