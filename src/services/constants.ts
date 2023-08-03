@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 
 export const windowGlobal: any = typeof window !== `undefined` && window
 export const URL: string = process.env.GATSBY_API_URL || `http://localhost:3001`
@@ -27,16 +27,18 @@ export function basePost(endpoint: string, body?: any, replaceHeaders?: any) {
     })
 }
 
-export function baseGet<T = any>(
+export async function baseGet<T = any>(
   endpoint: string,
+  params?: any,
   replaceHeaders?: any,
-): Promise<AxiosResponse<T>> {
+) {
   const headers = replaceHeaders || {
     'Content-Type': `application/json`,
   }
 
   return axios
     .get<T>(`${URL}${endpoint}`, {
+      params,
       headers: {
         ...headers,
         Authorization: `Bearer ${token}`,
