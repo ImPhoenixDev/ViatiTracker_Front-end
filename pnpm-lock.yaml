@@ -29,6 +29,9 @@ dependencies:
   '@passageidentity/passage-elements':
     specifier: 1.9.3
     version: 1.9.3
+  file-saver:
+    specifier: 2.0.5
+    version: 2.0.5
   gatsby:
     specifier: 5.11.0
     version: 5.11.0(babel-eslint@10.1.0)(eslint-import-resolver-typescript@3.5.5)(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)
@@ -7626,6 +7629,10 @@ packages:
       loader-utils: 2.0.4
       schema-utils: 3.1.2
       webpack: 5.88.2
+
+  /file-saver@2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==}
+    dev: false
 
   /file-type@16.5.4:
     resolution: {integrity: sha512-/yFHK0aGjFEgDJjEKP0pWCplsPFPhwyfwevf/pVxiN0tmE4L9LmwWxWukdJSHdoCli4VgQLehjJtwQBnqmsKcw==}
