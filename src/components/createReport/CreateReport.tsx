@@ -6,6 +6,7 @@ import CardSection from '../cardSection/CardSection'
 import BackComponent from '../backComponent/BackComponent'
 import downloadNewReport from '@/services/CRUD/downloadNewReport'
 import { navigate } from 'gatsby'
+import CardTitle from '../cardTitle/CardTitle'
 
 export default function CreateReport() {
   function onSubmit(data: any) {
@@ -29,7 +30,7 @@ export default function CreateReport() {
     <section className="login flex flex-col px-4 py-8 pt-0 h-screen lg:w-3/6 m-auto xl:w-1/6 bg-[#F9F9FB]">
       <BackComponent path="/app/dashboard" />
       <CardSection>
-        <h1>Create Report</h1>
+        <CardTitle>Descargar un reporte</CardTitle>
         <FormWrapper onSubmit={onSubmit}>
           <div className="flex flex-col justify-start h-full space-y-4 overflow-y-scroll">
             <CustomDatePicker
