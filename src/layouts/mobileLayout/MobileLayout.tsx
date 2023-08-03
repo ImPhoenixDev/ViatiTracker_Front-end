@@ -66,6 +66,9 @@ export default function MobileLayout({
             value="reports"
             icon={<Analytics />}
             className="!text-white"
+            onClick={() => {
+              navigate(`/app/create-report`)
+            }}
           />
         )}
 

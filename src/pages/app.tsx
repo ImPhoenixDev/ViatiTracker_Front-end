@@ -8,6 +8,7 @@ import PrivateRoute from '@/components/privateRoute/PrivateRoute'
 import ReviewExpense from '@/components/reviewExpense/ReviewExpense'
 import RejectExpense from '@/components/rejectExpense/RejectExpense'
 import CreateNewDeposit from '@/components/createNewDeposit/CreateNewDeposit'
+import CreateReport from '@/components/createReport/CreateReport'
 
 const App = () => {
   axios.defaults.withCredentials = true
@@ -20,6 +21,7 @@ const App = () => {
       <PrivateRoute path="/app/review-expense" component={ReviewExpense} />
       <PrivateRoute path="/app/reject-expense" component={RejectExpense} />
       <PrivateRoute path="/app/create-deposit" component={CreateNewDeposit} />
+      <PrivateRoute path="/app/create-report" component={CreateReport} />
     </Router>
   )
 }
