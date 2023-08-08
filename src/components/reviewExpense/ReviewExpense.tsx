@@ -18,6 +18,7 @@ import { descriptionRegister } from '../../utils/formUtils/descriptionRegister'
 import { amountRegister } from '@/utils/formUtils/amountRegister'
 import { dateRegister } from '@/utils/formUtils/dateRegister'
 import updateApproveExpense from '@/services/CRUD/updateApproveExpense'
+import { windowGlobal } from '@/services/constants'
 
 type ReviewExpenseProps = {
   path?: string
@@ -32,6 +33,10 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
   const expense: ExpenseData = location?.state?.expense || ({} as ExpenseData)
 
   const [activeStep, setActiveStep] = useState(0)
+
+  const userIsAdmin: boolean =
+    JSON.parse(windowGlobal?.localStorage.getItem(`userVT`))?.role ===
+      `Admin` || false
 
   const steps = [`Ver Info`, `Ver Imagenes`]
 
@@ -145,7 +150,7 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
               </div>
             </div>
 
-            {expense?.status !== `Rechazada` && (
+            {expense?.status !== `Rechazada` && userIsAdmin && (
               <div className="buttons flex justify-between items-end w-full grow">
                 <button type="button" className="mx-0 h-12" onClick={onReject}>
                   <Button
@@ -168,6 +173,25 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
                 </button>
               </div>
             )}
+            {!userIsAdmin && (
+              <div className="buttons flex justify-between items-end w-full grow">
+                <button
+                  type="button"
+                  className="mx-0 h-12"
+                  onClick={() => {
+                    setActiveStep((current) => current + 1)
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    component="span"
+                    className="whitespace-nowrap text-sm sans !bg-primary"
+                  >
+                    Siguiente
+                  </Button>
+                </button>
+              </div>
+            )}
           </FormWrapper>
         </div>
 
@@ -178,27 +202,48 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
         >
           <ImageListDisplayer pictures={expense?.picture_list} />
           <FormWrapper onSubmit={onSubmit}>
-            <div className="buttons flex justify-between items-end w-full grow">
-              <button type="button" className="mx-0 h-12" onClick={onReject}>
-                <Button
-                  variant="text"
-                  component="span"
-                  className="!text-primary"
-                >
-                  Rechazar
-                </Button>
-              </button>
+            {expense?.status !== `Rechazada` && userIsAdmin && (
+              <div className="buttons flex justify-between items-end w-full grow">
+                <button type="button" className="mx-0 h-12" onClick={onReject}>
+                  <Button
+                    variant="text"
+                    component="span"
+                    className="!text-primary"
+                  >
+                    Rechazar
+                  </Button>
+                </button>
 
-              <button type="submit" className="mx-0 h-12">
-                <Button
-                  variant="contained"
-                  component="span"
-                  className="whitespace-nowrap text-sm sans bg-primary"
+                <button type="submit" className="mx-0 h-12">
+                  <Button
+                    variant="contained"
+                    component="span"
+                    className="whitespace-nowrap text-sm sans !bg-primary"
+                  >
+                    Aprobar
+                  </Button>
+                </button>
+              </div>
+            )}
+            {!userIsAdmin && (
+              <div className="buttons flex justify-between items-end w-full grow">
+                <button
+                  type="button"
+                  className="mx-0 h-12"
+                  onClick={() => {
+                    setActiveStep((current) => current - 1)
+                  }}
                 >
-                  Aprobar
-                </Button>
-              </button>
-            </div>
+                  <Button
+                    variant="contained"
+                    component="span"
+                    className="whitespace-nowrap text-sm sans !bg-primary"
+                  >
+                    Atrás
+                  </Button>
+                </button>
+              </div>
+            )}
           </FormWrapper>
         </div>
       </CardSection>

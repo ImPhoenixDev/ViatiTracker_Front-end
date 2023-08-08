@@ -50,15 +50,17 @@ export default function MobileLayout({
             navigate(`/app/dashboard`)
           }}
         />
-        <BottomNavigationAction
-          label="Depósitos"
-          value="deposits"
-          icon={<LocalAtm />}
-          className="!text-white"
-          onClick={() => {
-            navigate(`/app/create-deposit`)
-          }}
-        />
+        {userIsAdmin && (
+          <BottomNavigationAction
+            label="Depósitos"
+            value="deposits"
+            icon={<LocalAtm />}
+            className="!text-white"
+            onClick={() => {
+              navigate(`/app/create-deposit`)
+            }}
+          />
+        )}
 
         {userIsAdmin && (
           <BottomNavigationAction

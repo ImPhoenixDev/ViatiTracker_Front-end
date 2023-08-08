@@ -5,12 +5,12 @@ import { Button } from '@mui/material'
 import ExpenseRow from '../expenseRow/ExpenseRow'
 import CardTitle from '../cardTitle/CardTitle'
 import UserSelect from '../userSelect/UserSelect'
+import MobileLayout from '@/layouts/mobileLayout/MobileLayout'
 
 import getUserByEmail from '@/services/CRUD/getUserByEmail'
 import getBudgetByUser from '@/services/CRUD/getBudgetByUser'
 import getExpensesByUser from '@/services/CRUD/getExpensesByUser'
 import { windowGlobal } from '@/services/constants'
-import MobileLayout from '@/layouts/mobileLayout/MobileLayout'
 
 type DashboardProps = {
   path?: string
