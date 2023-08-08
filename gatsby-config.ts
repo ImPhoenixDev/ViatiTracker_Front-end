@@ -17,19 +17,7 @@ const config: GatsbyConfig = {
         background_color: `#FFF`,
         theme_color: `#4C9FC1`,
         display: `standalone`,
-        icon: `src/images/logo.svg`,
-        icons: [
-          {
-            src: `/favicons/logo.svg`,
-            sizes: `192x192`,
-            type: `image/png`,
-          },
-          {
-            src: `/favicons/logo.svg`,
-            sizes: `512x512`,
-            type: `image/png`,
-          },
-        ],
+        icon: `src/images/logo.png`,
       },
     },
     `gatsby-plugin-offline`,
