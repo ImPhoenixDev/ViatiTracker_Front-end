@@ -12,11 +12,11 @@ import AmountComponent from '../formComponents/amountComponent/AmountComponent'
 import DropdownFieldWrapper from '../formComponents/dropdownComponent/DropdownComponent'
 import TextAreaWrapper from '../formComponents/textAreaWrapper/TextAreaWrapper'
 import ImageListDisplayer from '../imageListDisplayer/ImageListDisplayer'
+import CustomDatePicker from '../customDatePicker/CustomDatePicker'
 
 import { ExpenseData } from '@/services/CRUD/createExpense'
 import { descriptionRegister } from '../../utils/formUtils/descriptionRegister'
 import { amountRegister } from '@/utils/formUtils/amountRegister'
-import { dateRegister } from '@/utils/formUtils/dateRegister'
 import updateApproveExpense from '@/services/CRUD/updateApproveExpense'
 import { windowGlobal } from '@/services/constants'
 
@@ -106,11 +106,13 @@ export default function ReviewExpense({ location }: ReviewExpenseProps) {
                 registerOptions={amountRegister}
                 readOnly
               />
-              <TextFieldWrapper
+
+              <CustomDatePicker
                 readOnly
-                label="Fecha del gasto"
+                textDisplay="Fecha del gasto"
                 name="date"
-                registerOptions={dateRegister}
+                defaultValue={expense?.date}
+                required
               />
 
               <DropdownFieldWrapper
